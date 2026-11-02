@@ -1,0 +1,4 @@
+# Prisma Migrate lock file
+# This should be committed to version control.
+
+provider = "postgresql"

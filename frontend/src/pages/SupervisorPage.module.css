@@ -1,0 +1,75 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.metric {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-top: 3px solid var(--borda);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.borderAmbar {
+  border-top-color: var(--ambar);
+}
+
+.borderAzul {
+  border-top-color: var(--azul);
+}
+
+.borderErro {
+  border-top-color: #c0392b;
+}
+
+.borderVerde {
+  border-top-color: var(--verde);
+}
+
+.metricValue {
+  font-family: var(--font-title);
+  font-size: 34px;
+  font-weight: 800;
+  color: #1a1c1a;
+  line-height: 1;
+}
+
+.metricLabel {
+  font-size: 13px;
+  color: var(--mono);
+}
+
+.slaAlert {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--erro-d);
+}
+
+.configBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid var(--azul);
+  border-radius: 6px;
+  color: var(--azul);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.configBtn:hover {
+  background: var(--azul-l);
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,0 +1,154 @@
+.page {
+  padding: 28px 32px;
+  max-width: 1100px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 26px;
+  color: var(--azul-d);
+}
+
+.sub {
+  margin: 6px 0 0;
+  color: var(--mono);
+  font-size: 14px;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.setorChips,
+.statusTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip,
+.chipActive,
+.tab,
+.tabActive {
+  border: 1px solid var(--borda);
+  background: var(--card);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--mono);
+}
+
+.chipActive,
+.tabActive {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: #fff;
+}
+
+.count {
+  margin-left: 6px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.chip .count {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  transition: border-color 0.15s;
+}
+
+.row:hover {
+  border-color: var(--azul);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.meta {
+  min-width: 0;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.top strong {
+  font-size: 15px;
+}
+
+.warn {
+  color: var(--erro-d);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.phone {
+  color: var(--mono);
+  margin: 2px 0 4px;
+}
+
+.preview {
+  font-size: 13px;
+  color: #3a3f3c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.setorTag {
+  font-size: 11px;
+  color: var(--mono);
+  font-weight: 600;
+}
+
+.empty {
+  color: var(--mono);
+  padding: 32px 0;
+  text-align: center;
+}

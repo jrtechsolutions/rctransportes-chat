@@ -1,0 +1,273 @@
+:root {
+  --azul: #2d6ca6;
+  --azul-d: #1f4e7a;
+  --azul-l: #e7eff7;
+  --ambar: #d98a2b;
+  --ambar-l: #fbf3e7;
+  --ambar-d: #8a5a15;
+  --verde: #1f6b47;
+  --verde-d: #164d33;
+  --verde-l: #e9f1e9;
+  --borda: #dcdfda;
+  --mono: #5b615d;
+  --card: #ffffff;
+  --fundo: #f7f7f5;
+  --texto: #14181c;
+  --erro-l: #fbeaea;
+  --erro-b: #e8c2c2;
+  --erro-d: #7a2020;
+
+  --font-title: 'Archivo', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --sidebar-w: 240px;
+  --radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--fundo);
+  color: #1a1c1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.badge-aguardando {
+  background: var(--ambar-l);
+  color: var(--ambar-d);
+}
+
+.badge-em_atendimento {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.badge-encerrada {
+  background: var(--verde-l);
+  color: var(--verde-d);
+}
+
+.badge-sla {
+  background: var(--erro-l);
+  color: var(--erro-d);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--azul);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--azul-d);
+}
+
+.btn-ambar {
+  background: var(--ambar);
+  color: #fff;
+}
+
+.btn-ambar:hover:not(:disabled) {
+  background: var(--ambar-d);
+}
+
+.btn-verde {
+  background: var(--verde);
+  color: #fff;
+}
+
+.btn-verde:hover:not(:disabled) {
+  background: var(--verde-d);
+}
+
+.btn-outline {
+  background: var(--card);
+  border-color: var(--azul);
+  color: var(--azul);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.link-edit {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--azul);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-edit:hover {
+  text-decoration: underline;
+  color: var(--azul-d);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--borda);
+  color: var(--mono);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.btn-danger {
+  background: var(--erro-l);
+  color: var(--erro-d);
+  border-color: var(--erro-b);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--erro-b);
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mono);
+}
+
+.field input,
+.field select,
+.field textarea {
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 14px;
+  background: var(--card);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--azul-l);
+  border-color: var(--azul);
+}
+
+.field .hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mono);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--borda);
+  font-size: 14px;
+}
+
+.table th {
+  background: var(--azul-l);
+  color: var(--azul-d);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}

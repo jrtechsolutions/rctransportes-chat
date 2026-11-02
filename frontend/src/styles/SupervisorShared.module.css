@@ -1,0 +1,142 @@
+/* Layout compartilhado das telas de supervisão (wireframe) */
+.page {
+  padding: 28px 36px 40px;
+  max-width: 1080px;
+}
+
+.header {
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1c1a;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  margin: 6px 0 0;
+  color: var(--mono);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+.panelTitle {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1c1a;
+  margin: 0 0 16px;
+}
+
+.sectionTitle {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1c1a;
+  margin: 0 0 12px;
+}
+
+.formRow {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.formRow2 {
+  grid-template-columns: 1fr 1.4fr;
+}
+
+.formRow3 {
+  grid-template-columns: 1.2fr 1.4fr 0.8fr;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.error {
+  background: var(--erro-l);
+  color: var(--erro-d);
+  border: 1px solid var(--erro-b);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.notice {
+  margin-top: 12px;
+  background: #e8f1fb;
+  color: #1a3a5c;
+  border: 1px solid #b7d0ea;
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.tableCard {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tableCard :global(.table) {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+.tableCard :global(.table th) {
+  background: transparent;
+  color: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1c1a;
+}
+
+@media (max-width: 800px) {
+  .page {
+    padding: 20px 16px;
+  }
+
+  .formRow2,
+  .formRow3 {
+    grid-template-columns: 1fr;
+  }
+}

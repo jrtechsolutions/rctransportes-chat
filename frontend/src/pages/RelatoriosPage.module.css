@@ -1,0 +1,89 @@
+.page {
+  padding: 24px 28px 48px;
+  position: relative;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
+  color: var(--azul-d);
+}
+
+.sub {
+  margin: 6px 0 0;
+  color: var(--mono);
+  font-size: 14px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--azul-d);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.card h2 {
+  font-size: 16px;
+  color: var(--azul-d);
+}
+
+.card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--mono);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borda);
+}
+
+.exportLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mono);
+  margin-right: auto;
+}

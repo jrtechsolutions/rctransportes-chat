@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposta MVP · RC Transportes · Gestão de Atendimentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --fundo: #F7F7F5;
+      --card: #FFFFFF;
+      --borda: #DCDFDA;
+      --texto: #14181C;
+      --mono: #5B615D;
+      --azul: #2D6CA6;
+      --azul-d: #1F4E7A;
+      --azul-l: #E7EFF7;
+      --ambar: #D98A2B;
+      --ambar-l: #FBF3E7;
+      --verde: #1F6B47;
+      --verde-l: #E9F1E9;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: var(--texto);
+      background: var(--fundo);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+    h1, h2, h3 { font-family: 'Archivo', sans-serif; font-weight: 800; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', monospace; }
+
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 48px;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(45,108,166,0.2), transparent 50%),
+        radial-gradient(ellipse at 85% 90%, rgba(31,107,71,0.12), transparent 45%),
+        linear-gradient(165deg, #1F4E7A 0%, #173d5c 55%, #142f48 100%);
+      color: #fff;
+    }
+    .cover-inner { max-width: 820px; }
+    .cover-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .cover p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 0 40px;
+    }
+    .cover-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .badge-cover {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .toc {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 32px;
+    }
+    .toc h2 { color: var(--azul-d); font-size: 28px; margin-bottom: 24px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 10px; }
+    .toc a { color: var(--azul); text-decoration: none; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 32px 16px;
+    }
+    .section-head {
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--borda);
+    }
+    .section-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--azul);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-head h2 { color: var(--azul-d); font-size: 28px; }
+    .section-head p { color: var(--mono); margin: 10px 0 0; max-width: 720px; }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0 8px;
+    }
+    .intro-card {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 18px 16px;
+    }
+    .intro-card strong {
+      display: block;
+      color: var(--azul-d);
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .intro-card span { font-size: 13px; color: var(--mono); }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 24px 0 8px;
+    }
+    .stack-card {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 14px;
+      padding: 20px 18px;
+      break-inside: avoid;
+    }
+    .stack-card h3 {
+      font-size: 15px;
+      color: var(--azul-d);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stack-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--azul-l);
+      color: var(--azul-d);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #c5d6e8;
+      font-weight: 500;
+    }
+    .stack-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--mono);
+      font-size: 13px;
+    }
+    .stack-card li { margin-bottom: 6px; }
+    .stack-card li strong { color: var(--texto); font-weight: 600; }
+    .stack-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .stack-chip {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      background: var(--verde-l);
+      color: var(--verde);
+      border: 1px solid #b8d4c4;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .shot {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      break-inside: avoid;
+    }
+    .shot-caption {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--borda);
+      background: var(--azul-l);
+    }
+    .shot-caption h3 {
+      font-size: 16px;
+      color: var(--azul-d);
+      margin-bottom: 4px;
+    }
+    .shot-caption p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--mono);
+    }
+    .shot-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--card);
+      color: var(--azul-d);
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #c5d6e8;
+    }
+    .shot-tag.secondary {
+      background: var(--ambar-l);
+      color: #8A5A15;
+      border-color: #efd9b0;
+    }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #e8ebe6;
+    }
+
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .pair .shot { margin-bottom: 0; }
+
+    .note {
+      background: var(--ambar-l);
+      border: 1px solid #efd9b0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #8A5A15;
+      margin-bottom: 28px;
+    }
+    .note strong { color: #6b4510; }
+
+    .closing {
+      max-width: 900px;
+      margin: 48px auto 80px;
+      padding: 40px 32px;
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+    }
+    .closing h2 { color: var(--azul-d); margin-bottom: 12px; }
+    .closing ul { margin: 16px 0; padding-left: 20px; color: var(--mono); }
+    .closing li { margin-bottom: 8px; }
+    .cta {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--borda);
+      font-size: 14px;
+      color: var(--mono);
+    }
+
+    .print-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.95);
+      border-bottom: 1px solid var(--borda);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+    .print-bar span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--mono);
+    }
+    .print-bar button {
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 13px;
+      background: var(--ambar);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    .print-bar button:hover { background: #8A5A15; }
+
+    @media (max-width: 800px) {
+      .pair { grid-template-columns: 1fr; }
+      .cover { padding: 48px 24px; }
+      .section { padding: 32px 20px 8px; }
+      .stack-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      .print-bar { display: none; }
+      .cover { min-height: auto; padding: 48px 32px; page-break-after: always; }
+      .shot { break-inside: avoid; page-break-inside: avoid; }
+      .stack-card { break-inside: avoid; page-break-inside: avoid; }
+      .section { page-break-before: auto; }
+      body { background: #fff; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-bar">
+    <span>Proposta MVP · RC Transportes · protótipo visual + stack técnico</span>
+    <button type="button" onclick="window.print()">Imprimir / Salvar PDF</button>
+  </div>
+
+  <header class="cover">
+    <div class="cover-inner">
+      <div class="cover-label">Documento de apresentação · Escopo visual + tecnologias</div>
+      <h1>Sistema de Gestão de Atendimentos</h1>
+      <p>
+        Protótipo navegável (MVP visual) para alinhamento de escopo com a RC Transportes —
+        telas, fluxos, permissões e a stack tecnológica prevista para o desenvolvimento real.
+      </p>
+      <div class="cover-meta">
+        <span class="badge-cover">Cliente: RC Transportes</span>
+        <span class="badge-cover">Protótipo: React + Vite (mock)</span>
+        <span class="badge-cover">Produção: TypeScript end-to-end</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc" id="indice">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#visao">Visão geral do MVP</a></li>
+      <li><a href="#stack">Stack tecnológico (frontend, backend, banco, segurança…)</a></li>
+      <li><a href="#acesso">Login e controle de acesso</a></li>
+      <li><a href="#atendimento">Módulo Atendimento (WhatsApp)</a></li>
+      <li><a href="#ocorrencias">Ocorrências e Check-in de KM</a></li>
+      <li><a href="#chamados">Chamados de Expedição + Painel TV</a></li>
+      <li><a href="#gestao">Dashboard e Relatórios</a></li>
+      <li><a href="#admin">Administração</a></li>
+      <li><a href="#proposta">O que este MVP entrega / próximos passos</a></li>
+    </ol>
+  </nav>
+
+  <section class="section" id="visao">
+    <div class="section-head">
+      <div class="section-num">01 · Visão geral</div>
+      <h2>O que o sistema cobre</h2>
+      <p>
+        Um único ambiente para atendimento via WhatsApp, ocorrências operacionais, check-in de KM,
+        chamados de expedição (com painel de TV), indicadores gerenciais e cadastro de usuários —
+        com permissões por tela (não por “perfil fixo”).
+      </p>
+    </div>
+    <div class="intro-grid">
+      <div class="intro-card">
+        <strong>Atendimento</strong>
+        <span>Inbox estilo WhatsApp, SLA, transferência, encerramento com motivo/resultado, observação interna.</span>
+      </div>
+      <div class="intro-card">
+        <strong>Ocorrências & KM</strong>
+        <span>Protocolos com prioridade/prazo, abertura manual, histórico de km com fotos mockadas.</span>
+      </div>
+      <div class="intro-card">
+        <strong>Expedição</strong>
+        <span>Abrir e trabalhar chamado + Painel TV full-screen (destaque âmbar para chamado novo &lt; 3 min).</span>
+      </div>
+      <div class="intro-card">
+        <strong>Gestão & Admin</strong>
+        <span>Dashboard (~13 KPIs + gráficos), 9 relatórios, config. de setor, usuários e motoristas.</span>
+      </div>
+    </div>
+    <div class="note" style="margin-top:24px">
+      <strong>Importante:</strong> as telas abaixo são o <em>protótipo visual</em> (dados fictícios) para fechar escopo e preço.
+      A seção seguinte descreve as <strong>linguagens e tecnologias</strong> que serão usadas na implementação real.
+    </div>
+  </section>
+
+  <section class="section" id="stack">
+    <div class="section-head">
+      <div class="section-num">02 · Stack técnico</div>
+      <h2>Linguagens e tecnologias do projeto</h2>
+      <p>
+        Stack já definida no repositório (frontend + backend). TypeScript de ponta a ponta —
+        mesma linguagem no browser e no servidor, com tipagem forte e menos atrito entre as equipes.
+      </p>
+    </div>
+
+    <div class="stack-grid">
+      <article class="stack-card">
+        <h3><span class="stack-pill">Frontend</span> Interface web</h3>
+        <ul>
+          <li><strong>TypeScript</strong> — linguagem principal</li>
+          <li><strong>React 18</strong> — componentes e telas</li>
+          <li><strong>Vite</strong> — build e servidor de desenvolvimento</li>
+          <li><strong>React Router</strong> — rotas e proteção de telas</li>
+          <li><strong>CSS Modules</strong> — estilos por tela (identidade RC)</li>
+          <li><strong>Recharts</strong> — gráficos do Dashboard</li>
+          <li><strong>Socket.io Client</strong> — atualização em tempo real</li>
+        </ul>
+      </article>
+
+      <article class="stack-card">
+        <h3><span class="stack-pill">Backend</span> API e serviços</h3>
+        <ul>
+          <li><strong>TypeScript (Node.js)</strong> — linguagem do servidor</li>
+          <li><strong>Fastify</strong> — API HTTP de alta performance</li>
+          <li><strong>Prisma</strong> — ORM e migrations</li>
+          <li><strong>Zod</strong> — validação de payloads</li>
+          <li><strong>Socket.io</strong> — push (conversas, painel TV, chamados)</li>
+          <li><strong>Nodemailer</strong> — envio de e-mails (confirmação de chamado)</li>
+          <li><strong>tsx</strong> — execução em desenvolvimento</li>
+        </ul>
+      </article>
+
+      <article class="stack-card">
+        <h3><span class="stack-pill">Banco</span> Persistência</h3>
+        <ul>
+          <li><strong>PostgreSQL</strong> — banco relacional principal</li>
+          <li><strong>Prisma Migrate</strong> — versionamento do schema</li>
+          <li>Entidades: usuários, setores, atendimentos, mensagens, ocorrências, KM, chamados, números WhatsApp</li>
+          <li>Índices e enums tipados no schema (status, papéis, direção da mensagem…)</li>
+        </ul>
+      </article>
+
+      <article class="stack-card">
+        <h3><span class="stack-pill">Segurança</span> Auth e proteção</h3>
+        <ul>
+          <li><strong>Microsoft Entra ID (Azure AD)</strong> via <strong>MSAL</strong> — login corporativo</li>
+          <li><strong>JWT</strong> (access + refresh) — sessão da API</li>
+          <li><strong>Cookies HTTP-only</strong> — refresh token</li>
+          <li><strong>Rate limit</strong> (@fastify/rate-limit) — proteção contra abuso</li>
+          <li><strong>CORS</strong> configurado + validação Zod em rotas</li>
+          <li><strong>Permissões por tela</strong> — menu e rotas liberadas por usuário (não perfil genérico)</li>
+          <li>Socket autenticado com JWT no handshake</li>
+        </ul>
+      </article>
+
+      <article class="stack-card">
+        <h3><span class="stack-pill">Integrações</span> WhatsApp e tempo real</h3>
+        <ul>
+          <li><strong>WhatsApp Business API</strong> — webhook de entrada + envio de mensagens</li>
+          <li>Números separados (clientes / motoristas) no cadastro</li>
+          <li><strong>Socket.io</strong> — fila ao vivo por setor e painel de TV</li>
+          <li>E-mail de confirmação nos chamados de expedição</li>
+        </ul>
+      </article>
+
+      <article class="stack-card">
+        <h3><span class="stack-pill">Ops</span> Ambiente e entrega</h3>
+        <ul>
+          <li>Monorepo: pastas <span class="mono">frontend/</span> e <span class="mono">backend/</span></li>
+          <li>Variáveis de ambiente (<span class="mono">.env</span>) para secrets e URLs</li>
+          <li>Scripts: <span class="mono">dev</span>, <span class="mono">build</span>, <span class="mono">prisma migrate</span>, seed</li>
+          <li>Deploy previsto: API Node + PostgreSQL + frontend estático (Vite build)</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="stack-chip-row">
+      <span class="stack-chip">TS · React · Vite</span>
+      <span class="stack-chip">TS · Fastify · Prisma</span>
+      <span class="stack-chip">PostgreSQL</span>
+      <span class="stack-chip">MSAL · JWT · Rate-limit</span>
+      <span class="stack-chip">WhatsApp API · Socket.io</span>
+      <span class="stack-chip">Zod · Nodemailer</span>
+    </div>
+  </section>
+
+  <section class="section" id="acesso">
+    <div class="section-head">
+      <div class="section-num">03 · Acesso</div>
+      <h2>Login e permissões</h2>
+      <p>Entrada corporativa (Microsoft) e menu montado dinamicamente conforme as telas liberadas de cada usuário.</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Tela de login</h3>
+        <p>Logo RC + botão “Entrar com Microsoft”. Em produção: SSO via Entra ID (MSAL). No protótipo, entra direto (sem senha).</p>
+      </div>
+      <img src="prints/01-login.png" alt="Tela de login RC Transportes" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag">Principal</span>
+          <h3>Visão do atendente (Carlos)</h3>
+          <p>Sidebar reduzida — só Conversas. Ideal para demonstrar permissão mínima.</p>
+        </div>
+        <img src="prints/02-atendimento-carlos.png" alt="Atendimento visão Carlos" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag">Principal</span>
+          <h3>Visão do administrador (Paulo)</h3>
+          <p>Menu completo: Atendimento, Ocorrências, Chamados, Gestão e Administração.</p>
+        </div>
+        <img src="prints/03-atendimento-admin.png" alt="Atendimento visão Admin" />
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="atendimento">
+    <div class="section-head">
+      <div class="section-num">04 · Atendimento</div>
+      <h2>Conversas WhatsApp</h2>
+      <p>Lista + chat em duas colunas, filtros Todas/Minhas/Setor, badges de tipo e SLA, transferência e encerramento.</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Inbox de conversas</h3>
+        <p>Contatos Motorista / Agregado / Cliente / Lead; SLA crítico em vermelho; observação interna com cadeado.</p>
+      </div>
+      <img src="prints/03-atendimento-admin.png" alt="Inbox de conversas" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Modal Encerrar atendimento</h3>
+          <p>Motivo (optgroups), resultado do atendimento e descrição complementar.</p>
+        </div>
+        <img src="prints/04-modal-encerrar.png" alt="Modal encerrar atendimento" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Busca avançada</h3>
+          <p>Campos: nome, telefone, protocolo, NF, CT-e, placa, pedido, motivo, resultado, responsável, período.</p>
+        </div>
+        <img src="prints/05-busca-avancada.png" alt="Busca avançada" />
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="ocorrencias">
+    <div class="section-head">
+      <div class="section-num">05 · Operacional</div>
+      <h2>Ocorrências e Check-in de KM</h2>
+      <p>Independente da conversa do WhatsApp. Protocolos com prioridade e prazo; KM é histórico/relatório (não a interação do motorista).</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Lista de ocorrências</h3>
+        <p>Filtros por status, prioridade, responsável e período. Botão “Nova ocorrência” para abertura manual.</p>
+      </div>
+      <img src="prints/06-ocorrencias.png" alt="Lista de ocorrências" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag secondary">Secundária</span>
+        <h3>Modal Nova ocorrência</h3>
+        <p>Cliente/motorista, motivo, prioridade, prazo e responsável — gera protocolo e entra como Aberta.</p>
+      </div>
+      <img src="prints/07-nova-ocorrencia.png" alt="Modal nova ocorrência" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Check-in de KM</h3>
+        <p>Histórico com km inicial/final, km rodado e status ok / pendente de fechamento (registros via WhatsApp).</p>
+      </div>
+      <img src="prints/08-km.png" alt="Check-in de KM" />
+    </article>
+  </section>
+
+  <section class="section" id="chamados">
+    <div class="section-head">
+      <div class="section-num">06 · Expedição</div>
+      <h2>Chamados + Painel de TV</h2>
+      <p>Abrir chamado por formulário estruturado (sem IA), trabalhar na fila e exibir na TV do setor com alerta visual/sonoro.</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Abrir chamado</h3>
+        <p>Formulário: cliente, tipo de veículo, peso (kg/t), horário de corte (atalhos) e e-mail original opcional — sem análise automática.</p>
+      </div>
+      <img src="prints/09-abrir-chamado.png" alt="Abrir chamado" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Trabalhar chamado</h3>
+        <p>Fila (abertos / em andamento / e-mail pendente), detalhe, observação e marcar como resolvido.</p>
+      </div>
+      <img src="prints/10-trabalhar-chamado.png" alt="Trabalhar chamado" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Painel TV — splash</h3>
+          <p>Toque para liberar áudio de alerta (requisito de browser).</p>
+        </div>
+        <img src="prints/18-painel-tv-splash.png" alt="Splash painel TV" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag">Principal</span>
+          <h3>Painel da expedição</h3>
+          <p>Full-screen: card âmbar para chamado novo (&lt; 3 min), branco (aberto) e azul (em andamento).</p>
+        </div>
+        <img src="prints/19-painel-tv.png" alt="Painel da TV ativo" />
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="gestao">
+    <div class="section-head">
+      <div class="section-num">07 · Gestão</div>
+      <h2>Dashboard e Relatórios</h2>
+      <p>Visível para quem tiver as telas liberadas (ex.: liderança / administrador).</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Dashboard — indicadores</h3>
+        <p>~13 KPIs (atendimentos, SLA, ocorrências, leads, km, reaberturas, clientes ativos…) + filtros.</p>
+      </div>
+      <img src="prints/11-dashboard-topo.png" alt="Dashboard KPIs" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Dashboard — gráficos</h3>
+        <p>Volume, motivos, SLA por setor, tipos de contato, prioridades, tops, reclamações, produtividade, comparativo.</p>
+      </div>
+      <img src="prints/12-dashboard-graficos.png" alt="Dashboard gráficos" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Relatórios</h3>
+        <p>9 cards com exportação visual Excel / PDF (Volume, Motivos, Reclamações, Ocorrências, Históricos, Produtividade, Reincidência, Comparativo).</p>
+      </div>
+      <img src="prints/13-relatorios.png" alt="Relatórios" />
+    </article>
+  </section>
+
+  <section class="section" id="admin">
+    <div class="section-head">
+      <div class="section-num">08 · Administração</div>
+      <h2>Setor, usuários e motoristas</h2>
+      <p>Configuração de SLA/limites e cadastro com checkboxes de telas liberadas.</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Configurações de setor</h3>
+        <p>SLA em minutos + limite de atendimentos simultâneos por agente. Aviso Jundiaí → Matriz.</p>
+      </div>
+      <img src="prints/14-config-setor.png" alt="Configurações de setor" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag">Principal</span>
+        <h3>Usuários do sistema</h3>
+        <p>Nome, e-mail, setor, badges de telas liberadas e status. Administrador vê tudo.</p>
+      </div>
+      <img src="prints/15-usuarios.png" alt="Lista de usuários" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Modal Novo usuário</h3>
+          <p>Toggle Administrador + checkboxes de telas liberadas.</p>
+        </div>
+        <img src="prints/16-novo-usuario.png" alt="Modal novo usuário" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag">Principal</span>
+          <h3>Motoristas e Agregados</h3>
+          <p>Nome, telefone, tipo, placa e status — cadastro separado dos usuários do escritório.</p>
+        </div>
+        <img src="prints/17-motoristas.png" alt="Motoristas e agregados" />
+      </article>
+    </div>
+  </section>
+
+  <section class="closing" id="proposta">
+    <h2>Para a proposta comercial</h2>
+    <p style="color:var(--mono);margin:0">
+      Este material mostra o <strong style="color:var(--texto)">MVP visual completo</strong> e a
+      <strong style="color:var(--texto)">stack tecnológica</strong> alinhada ao repositório.
+      Serve para a RC validar telas, fluxos, regras de acesso e tecnologias antes (ou durante) o desenvolvimento com backend real.
+    </p>
+    <ul>
+      <li><strong>Incluído neste protótipo:</strong> todas as telas listadas, navegação por permissão, dados mockados, painel TV com destaque âmbar, formulário de abrir chamado sem IA.</li>
+      <li><strong>Stack de produção (já no projeto):</strong> React/Vite/TS · Fastify/Prisma/PostgreSQL · MSAL/JWT · WhatsApp API · Socket.io · Zod · rate-limit · Nodemailer.</li>
+      <li><strong>Como usar este arquivo:</strong> abra no navegador → botão “Imprimir / Salvar PDF” → anexe à proposta ou apresente em reunião.</li>
+    </ul>
+    <div class="cta">
+      Pasta do material: <span class="mono">proposta/PROPOSTA-MVP-RC-Transportes.html</span> · prints em <span class="mono">proposta/prints/</span>
+    </div>
+  </section>
+</body>
+</html>

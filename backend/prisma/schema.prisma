@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Papel {
+  agente
+  supervisor
+}
+
+enum TipoAtendimento {
+  ocorrencia
+  conversa
+}
+
+enum StatusAtendimento {
+  aguardando
+  em_atendimento
+  encerrada
+}
+
+enum DirecaoMensagem {
+  entrada
+  saida
+}
+
+enum UsoNumeroWhatsapp {
+  clientes
+  motorista
+}
+
+enum StatusChamado {
+  ABERTO
+  EM_ANDAMENTO
+  RESOLVIDO
+}
+
+model NumeroWhatsapp {
+  id            String            @id @default(cuid())
+  uso           UsoNumeroWhatsapp @unique
+  phoneNumberId String            @map("phone_number_id")
+
+  setores Setor[]
+
+  @@map("numeros_whatsapp")
+}
+
+model Setor {
+  id               String  @id @default(cuid())
+  nome             String
+  numeroWhatsappId String? @map("numero_whatsapp_id")
+  slaMinutos       Int     @default(15) @map("sla_minutos")
+
+  numeroWhatsapp     NumeroWhatsapp?  @relation(fields: [numeroWhatsappId], references: [id])
+  usuarios           UsuarioSetor[]
+  atendimentos       Atendimento[]    @relation("AtendimentoSetor")
+  transferenciasDe   Transferencia[]  @relation("TransferenciaDe")
+  transferenciasPara Transferencia[]  @relation("TransferenciaPara")
+
+  @@map("setores")
+}
+
+model Usuario {
+  id           String  @id @default(cuid())
+  nome         String
+  email        String  @unique
+  microsoftOid String? @unique @map("microsoft_oid")
+  papel        Papel
+  ativo        Boolean @default(true)
+
+  setores               UsuarioSetor[]
+  atendimentosAssumidos Atendimento[]  @relation("AtendimentoAssumido")
+  conversasLimpas       Atendimento[]  @relation("ConversaLimpa")
+  mensagens             Mensagem[]
+  transferencias        Transferencia[]
+  refreshTokens         RefreshToken[]
+  chamadosCriados       Chamado[]           @relation("ChamadosCriados")
+  chamadosAssumidos     Chamado[]           @relation("ChamadosAssumidos")
+  chamadoObservacoes    ChamadoObservacao[]
+
+  @@map("usuarios")
+}
+
+model UsuarioSetor {
+  usuarioId String @map("usuario_id")
+  setorId   String @map("setor_id")
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  setor   Setor   @relation(fields: [setorId], references: [id], onDelete: Cascade)
+
+  @@id([usuarioId, setorId])
+  @@map("usuario_setores")
+}
+
+model Motorista {
+  id       String  @id @default(cuid())
+  nome     String
+  telefone String  @unique
+  placa    String?
+  ativo    Boolean @default(true)
+
+  @@map("motoristas")
+}
+
+model Atendimento {
+  id                       String            @id @default(cuid())
+  tipo                     TipoAtendimento
+  setorId                  String?           @map("setor_id")
+  contatoTelefone          String            @map("contato_telefone")
+  contatoNome              String?           @map("contato_nome")
+  status                   StatusAtendimento @default(aguardando)
+  assumidoPorId            String?           @map("assumido_por")
+  slaVenceEm               DateTime?         @map("sla_vence_em")
+  motoristaNaoIdentificado Boolean           @default(false) @map("motorista_nao_identificado")
+  conversaLimpaPorId       String?           @map("conversa_limpa_por")
+  conversaLimpaEm          DateTime?         @map("conversa_limpa_em")
+  aguardandoMenu           Boolean           @default(false) @map("aguardando_menu")
+  menuEnviadoEm            DateTime?         @map("menu_enviado_em")
+  menuLembreteEnviadoEm    DateTime?         @map("menu_lembrete_enviado_em")
+  ultimaMensagemPreview    String?           @map("ultima_mensagem_preview")
+  criadoEm                 DateTime          @default(now()) @map("criado_em")
+  atualizadoEm             DateTime          @updatedAt @map("atualizado_em")
+
+  setor            Setor?          @relation("AtendimentoSetor", fields: [setorId], references: [id])
+  assumidoPor      Usuario?        @relation("AtendimentoAssumido", fields: [assumidoPorId], references: [id])
+  conversaLimpaPor Usuario?        @relation("ConversaLimpa", fields: [conversaLimpaPorId], references: [id])
+  mensagens        Mensagem[]
+  transferencias   Transferencia[]
+
+  @@index([setorId, status])
+  @@index([contatoTelefone])
+  @@index([status])
+  @@map("atendimentos")
+}
+
+model Mensagem {
+  id                 String          @id @default(cuid())
+  atendimentoId      String          @map("atendimento_id")
+  direcao            DirecaoMensagem
+  remetenteUsuarioId String?         @map("remetente_usuario_id")
+  conteudo           String?
+  whatsappMessageId  String?         @unique @map("whatsapp_message_id")
+  enviadoEm          DateTime        @default(now()) @map("enviado_em")
+
+  atendimento      Atendimento @relation(fields: [atendimentoId], references: [id], onDelete: Cascade)
+  remetenteUsuario Usuario?    @relation(fields: [remetenteUsuarioId], references: [id])
+
+  @@index([atendimentoId, enviadoEm])
+  @@map("mensagens")
+}
+
+model Transferencia {
+  id            String   @id @default(cuid())
+  atendimentoId String   @map("atendimento_id")
+  deSetorId     String   @map("de_setor_id")
+  paraSetorId   String   @map("para_setor_id")
+  usuarioId     String   @map("usuario_id")
+  criadoEm      DateTime @default(now()) @map("criado_em")
+
+  atendimento Atendimento @relation(fields: [atendimentoId], references: [id], onDelete: Cascade)
+  deSetor     Setor       @relation("TransferenciaDe", fields: [deSetorId], references: [id])
+  paraSetor   Setor       @relation("TransferenciaPara", fields: [paraSetorId], references: [id])
+  usuario     Usuario     @relation(fields: [usuarioId], references: [id])
+
+  @@map("transferencias")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  usuarioId String   @map("usuario_id")
+  expiresAt DateTime @map("expires_at")
+  criadoEm  DateTime @default(now()) @map("criado_em")
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@map("refresh_tokens")
+}
+
+/// Chamados de expedição. Nunca apagar: retenção indefinida (mesma política das ocorrências).
+model Chamado {
+  id                        String        @id @default(uuid())
+  clienteNome               String        @map("cliente_nome")
+  clienteEmail              String        @map("cliente_email")
+  destino                   String
+  notaFiscal                String?       @map("nota_fiscal")
+  tipoVeiculo               String        @map("tipo_veiculo")
+  peso                      String
+  /// HH:mm, tratado como horário do dia do chamado
+  horarioLimite             String        @map("horario_limite")
+  /// E-mail colado, guardado para auditoria/retreino do prompt de extração
+  emailOriginalTexto        String        @map("email_original_texto") @db.Text
+  status                    StatusChamado @default(ABERTO)
+  criadoPorId               String        @map("criado_por_id")
+  assumidoPorId             String?       @map("assumido_por_id")
+  resolvidoEm               DateTime?     @map("resolvido_em")
+  emailConfirmacaoEnviadoEm DateTime?     @map("email_confirmacao_enviado_em")
+  emailConfirmacaoErro      String?       @map("email_confirmacao_erro")
+  criadoEm                  DateTime      @default(now()) @map("criado_em")
+  atualizadoEm              DateTime      @updatedAt @map("atualizado_em")
+
+  criadoPor   Usuario             @relation("ChamadosCriados", fields: [criadoPorId], references: [id])
+  assumidoPor Usuario?            @relation("ChamadosAssumidos", fields: [assumidoPorId], references: [id])
+  observacoes ChamadoObservacao[]
+
+  @@index([status, criadoEm])
+  @@map("chamados")
+}
+
+model ChamadoObservacao {
+  id        String   @id @default(uuid())
+  chamadoId String   @map("chamado_id")
+  autorId   String   @map("autor_id")
+  texto     String   @db.Text
+  criadoEm  DateTime @default(now()) @map("criado_em")
+
+  chamado Chamado @relation(fields: [chamadoId], references: [id])
+  autor   Usuario @relation(fields: [autorId], references: [id])
+
+  @@index([chamadoId, criadoEm])
+  @@map("chamado_observacoes")
+}

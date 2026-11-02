@@ -1,0 +1,191 @@
+.page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--borda);
+  background: var(--card);
+}
+
+.title {
+  font-size: 20px;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--mono);
+  margin-top: 2px;
+}
+
+.alertas {
+  padding: 16px 32px 0;
+}
+
+.sucesso {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  border: 1px solid var(--verde);
+  background: var(--verde-l);
+  color: var(--verde-d);
+}
+
+.body {
+  padding: 24px 32px 48px;
+  max-width: 640px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mono);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  font-size: 14px;
+  background: var(--card);
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: 2px solid var(--azul-l);
+  border-color: var(--azul);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.pesoRow {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.pesoInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.unidadeToggle {
+  display: flex;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.unidadeBtn,
+.unidadeAtiva {
+  border: none;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  background: var(--card);
+  color: var(--mono);
+}
+
+.unidadeBtn:hover {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.unidadeAtiva {
+  background: var(--azul);
+  color: #fff;
+}
+
+.atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.atalho {
+  border: 1px solid var(--borda);
+  background: var(--fundo);
+  color: var(--azul-d);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.atalho:hover {
+  background: var(--azul-l);
+  border-color: var(--azul);
+}
+
+.emailBox {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borda);
+}
+
+.opcional {
+  font-weight: 400;
+  color: var(--mono);
+}
+
+.emailHint {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--mono);
+  line-height: 1.4;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  font-size: 13px;
+  resize: vertical;
+  font-family: inherit;
+  background: var(--fundo);
+}
+
+.fullBtn {
+  width: 100%;
+  margin-top: 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.criarBtn {
+  margin-top: 20px;
+  padding: 12px 16px;
+  font-size: 14px;
+}

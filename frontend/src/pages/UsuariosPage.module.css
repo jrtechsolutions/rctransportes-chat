@@ -1,0 +1,89 @@
+.telas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 360px;
+}
+
+.telaBadge {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  white-space: nowrap;
+}
+
+.adminTag {
+  display: inline-flex;
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--ambar-l);
+  color: var(--ambar-d);
+  vertical-align: middle;
+}
+
+.adminToggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--ambar-l);
+  border: 1px solid #efd9b0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.adminToggle input {
+  margin-top: 2px;
+}
+
+.adminHint {
+  color: var(--mono);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.checkGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--fundo);
+}
+
+.checkTitle {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.checkDisabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  color: var(--mono);
+}

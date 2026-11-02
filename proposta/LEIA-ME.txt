@@ -1,0 +1,22 @@
+PROPOSTA MVP — RC Transportes
+==============================
+
+Arquivo principal:
+  PROPOSTA-MVP-RC-Transportes.html
+
+Conteúdo:
+  - Capa + índice
+  - Visão geral do MVP
+  - Stack técnico (frontend, backend, banco, segurança, integrações)
+  - Prints das telas (login → admin → painel TV)
+  - Fechamento para proposta comercial
+
+Como usar:
+  1. Abra o HTML no Chrome / Edge (duplo clique ou arraste para o navegador).
+  2. Clique em "Imprimir / Salvar PDF" no topo (ou Ctrl+P).
+  3. Em Destino, escolha "Salvar como PDF" se quiser anexar à proposta.
+
+As imagens ficam na pasta:
+  prints/
+
+Não precisa de internet para ver as telas (só as fontes Google; se offline ainda abre).

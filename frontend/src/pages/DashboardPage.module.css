@@ -1,0 +1,116 @@
+.page {
+  padding: 24px 28px 48px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 24px;
+  color: var(--azul-d);
+}
+
+.sub {
+  margin: 6px 0 0;
+  color: var(--mono);
+  font-size: 14px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.filters select {
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  background: var(--card);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px 14px;
+}
+
+.kpiValor {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--azul-d);
+  line-height: 1.1;
+}
+
+.kpiBadge {
+  margin-left: 8px;
+  vertical-align: middle;
+  font-family: var(--font-body);
+}
+
+.kpiLabel {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--mono);
+  line-height: 1.35;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.chartCard {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px 18px 8px;
+}
+
+.chartCard h3 {
+  font-size: 14px;
+  color: var(--azul-d);
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.rankings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.rankCard {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.rankCard h2 {
+  font-size: 16px;
+  color: var(--azul-d);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 1000px) {
+  .charts,
+  .rankings {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,334 @@
+.page {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: calc(100vh - 57px);
+  overflow: hidden;
+}
+
+.listPane {
+  border-right: 1px solid var(--borda);
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 8px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.tab,
+.tabActive {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--mono);
+}
+
+.tab:hover {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.tabActive {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.setorFiltro {
+  padding: 8px 12px 0;
+}
+
+.setorFiltro select {
+  width: 100%;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  background: var(--card);
+}
+
+.list {
+  overflow: auto;
+  flex: 1;
+  padding: 8px;
+}
+
+.listItem,
+.listItemActive {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  padding: 12px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.listItem:hover {
+  background: var(--azul-l);
+}
+
+.listItemActive {
+  background: var(--azul-l);
+}
+
+.listTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.listTop strong {
+  font-size: 14px;
+  color: var(--texto, #14181c);
+}
+
+.tempo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mono);
+  flex-shrink: 0;
+}
+
+.listMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.tipoBadge {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tipoMotorista {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.tipoAgregado {
+  background: #eef0f8;
+  color: #3d4a7a;
+}
+
+.tipoCliente {
+  background: var(--verde-l);
+  color: var(--verde-d);
+}
+
+.tipoLead {
+  background: var(--ambar-l);
+  color: var(--ambar-d);
+}
+
+.slaCritico {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--erro-d);
+  background: var(--erro-l);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.slaDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--erro-d);
+}
+
+.slaOk {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--verde-d);
+  background: var(--verde-l);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.listPreview {
+  font-size: 12px;
+  color: var(--mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatPane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--fundo);
+  position: relative;
+}
+
+.toast {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  background: var(--verde);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--borda);
+}
+
+.chatHeader h1 {
+  font-size: 18px;
+  color: var(--azul-d);
+}
+
+.headerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--mono);
+  margin-top: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.messages {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bubbleIn,
+.bubbleOut {
+  max-width: min(420px, 85%);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bubbleIn {
+  align-self: flex-start;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-bottom-left-radius: 4px;
+}
+
+.bubbleOut {
+  align-self: flex-end;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  border-bottom-right-radius: 4px;
+}
+
+.bubbleHora {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.obsBox {
+  margin: 0 16px 8px;
+  padding: 12px 14px;
+  background: #f3f1ec;
+  border: 1px dashed #c8c4ba;
+  border-radius: 12px;
+}
+
+.obsLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ambar-d);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.obsHint {
+  margin: 4px 0 8px;
+  font-size: 12px;
+  color: var(--mono);
+}
+
+.obsBox textarea {
+  width: 100%;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  resize: vertical;
+  background: var(--card);
+}
+
+.composer {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  background: var(--card);
+  border-top: 1px solid var(--borda);
+}
+
+.composer input {
+  flex: 1;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .listPane {
+    max-height: 280px;
+  }
+}

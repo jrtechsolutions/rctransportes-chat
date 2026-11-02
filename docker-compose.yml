@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rc-atendimento-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rc
+      POSTGRES_PASSWORD: rc_dev_password
+      POSTGRES_DB: rc_atendimento
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rc -d rc_atendimento"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rc-atendimento-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://rc:rc_dev_password@postgres:5432/rc_atendimento?schema=public
+      PORT: "3000"
+      HOST: "0.0.0.0"
+    # Em desenvolvimento local a porta fica exposta; em produção o nginx faz proxy sem expor.
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
