@@ -1,0 +1,251 @@
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.kpiValor {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+  color: var(--azul-d);
+}
+
+.kpiLabel {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--mono);
+}
+
+.fluxo {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.passo {
+  background: var(--azul-l);
+  border: 1px solid #c5d6e8;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--azul-d);
+  line-height: 1.4;
+}
+
+.passoNum {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.thumbNota {
+  width: 34px;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--borda);
+  background:
+    repeating-linear-gradient(90deg, #14181c 0 1px, transparent 1px 3px) 4px 30px / 24px 7px no-repeat,
+    linear-gradient(#e7eff7 0 8px, #fff 8px);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 44 dígitos em grupos de 4 — quebra em duas linhas de 6 grupos */
+.chave {
+  display: block;
+  width: 30ch;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.copiar {
+  font-size: 12px;
+}
+
+.detalhe {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 20px;
+}
+
+.detalhe :global(.field),
+.detalhe input {
+  min-width: 0;
+}
+
+/* Foto mockada da DANFE, como chega pelo WhatsApp */
+.foto {
+  background: #3a3f44;
+  border-radius: 10px;
+  padding: 18px 14px;
+}
+
+.papel {
+  background: #fdfdfb;
+  transform: rotate(-1.2deg);
+  padding: 10px;
+  font-size: 9px;
+  color: #222;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.papelBorrado {
+  filter: blur(0.6px) brightness(0.96);
+}
+
+.papelCortado {
+  clip-path: polygon(0 0, 100% 0, 100% 86%, 0 92%);
+}
+
+.papelTopo {
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: 6px;
+  border: 1px solid #555;
+  padding: 6px;
+}
+
+.papelEmitente {
+  font-weight: 700;
+  font-size: 10px;
+}
+
+.papelDanfe {
+  border-left: 1px solid #555;
+  padding-left: 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.barras {
+  height: 30px;
+  margin: 8px 0 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #111 0 2px,
+    transparent 2px 3px,
+    #111 3px 4px,
+    transparent 4px 7px,
+    #111 7px 10px,
+    transparent 10px 11px
+  );
+}
+
+.papelChave {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  text-align: center;
+  word-break: break-all;
+}
+
+.papelLinhas {
+  margin-top: 8px;
+  border: 1px solid #555;
+  height: 90px;
+  background: repeating-linear-gradient(#fdfdfb 0 13px, #ccc 13px 14px);
+}
+
+.conversa {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.bot,
+.motorista {
+  max-width: 90%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  line-height: 1.35;
+}
+
+.bot {
+  background: var(--azul-l);
+  color: var(--azul-d);
+  align-self: flex-start;
+}
+
+.motorista {
+  background: var(--verde-l);
+  color: var(--verde-d);
+  align-self: flex-end;
+}
+
+.checks {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  font-size: 13px;
+}
+
+.checks li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.checkIcon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.checkOk {
+  background: var(--verde-l);
+  color: var(--verde-d);
+}
+
+.checkErro {
+  background: var(--erro-l);
+  color: var(--erro-d);
+}
+
+.checkNa {
+  background: #eef0ee;
+  color: var(--mono);
+}
+
+.campoErro {
+  border-color: var(--erro-b) !important;
+  background: var(--erro-l) !important;
+}
+
+.hintErro {
+  font-size: 12px;
+  color: var(--erro-d);
+  margin: 0 0 10px;
+}
+
+@media (max-width: 900px) {
+  .kpis,
+  .fluxo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detalhe {
+    grid-template-columns: 1fr;
+  }
+}

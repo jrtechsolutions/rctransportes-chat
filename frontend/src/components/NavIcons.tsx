@@ -125,15 +125,6 @@ export function IconPendencias({ className }: IconProps) {
   );
 }
 
-export function IconTelefone({ className }: IconProps) {
-  return (
-    <Svg className={className}>
-      <rect x="5" y="2" width="14" height="20" rx="2" />
-      <line x1="12" y1="18" x2="12.01" y2="18" />
-    </Svg>
-  );
-}
-
 export function IconFalhas({ className }: IconProps) {
   return (
     <Svg className={className}>
@@ -149,6 +140,18 @@ export function IconAuditoria({ className }: IconProps) {
     <Svg className={className}>
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <polyline points="9 12 11 14 15 10" />
+    </Svg>
+  );
+}
+
+export function IconNotas({ className }: IconProps) {
+  return (
+    <Svg className={className}>
+      <path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .67V2l-1 .67-3-2-3 2-3-2-3 2-3-2z" />
+      <line x1="8" y1="8" x2="8" y2="14" />
+      <line x1="11" y1="8" x2="11" y2="14" />
+      <line x1="13" y1="8" x2="13" y2="14" />
+      <line x1="16" y1="8" x2="16" y2="14" />
     </Svg>
   );
 }
@@ -172,6 +175,16 @@ export function IconLogout({ className }: IconProps) {
   );
 }
 
+export function IconMenu({ className }: IconProps) {
+  return (
+    <Svg className={className}>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="18" x2="20" y2="18" />
+    </Svg>
+  );
+}
+
 export function IconChevron({ className }: IconProps) {
   return (
     <Svg className={className}>
@@ -186,12 +199,12 @@ const MAP: Record<TelaId, (p: IconProps) => ReactNode> = {
   ocorrencias: IconOcorrencias,
   pendencias: IconPendencias,
   km: IconKm,
+  'notas-coleta': IconNotas,
   'abrir-chamado': IconAbrir,
   'trabalhar-chamado': IconTrabalhar,
   dashboard: IconDashboard,
   relatorios: IconRelatorios,
   usuarios: IconUsuarios,
-  'numeros-whatsapp': IconTelefone,
   'falhas-integracao': IconFalhas,
   auditoria: IconAuditoria,
 };

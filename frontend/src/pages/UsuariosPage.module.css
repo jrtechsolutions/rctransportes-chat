@@ -87,3 +87,24 @@
   cursor: not-allowed;
   color: var(--mono);
 }
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.labelRow :global(.link-edit) {
+  font-size: 12px;
+}
+
+.novoSetor {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.novoSetor input {
+  flex: 1;
+  min-width: 0;
+}

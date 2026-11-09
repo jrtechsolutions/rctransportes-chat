@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { PrototypeProvider, usePrototype } from './mock/PrototypeContext';
+import { ChamadosProvider } from './mock/ChamadosContext';
 import { AppLayout } from './components/AppLayout';
 import { LoginPage } from './pages/LoginPage';
 import { AtendimentoPage } from './pages/AtendimentoPage';
@@ -13,9 +14,9 @@ import { DashboardPage } from './pages/DashboardPage';
 import { RelatoriosPage } from './pages/RelatoriosPage';
 import { UsuariosPage } from './pages/UsuariosPage';
 import { PendenciasPage } from './pages/PendenciasPage';
-import { NumerosWhatsappPage } from './pages/NumerosWhatsappPage';
 import { FalhasIntegracaoPage } from './pages/FalhasIntegracaoPage';
 import { AuditoriaPage } from './pages/AuditoriaPage';
+import { NotasColetaPage } from './pages/NotasColetaPage';
 import type { TelaId } from './mock/types';
 import type { ReactNode } from 'react';
 
@@ -47,6 +48,7 @@ function DefaultRedirect() {
 export function App() {
   return (
     <PrototypeProvider>
+      <ChamadosProvider>
       <Routes>
         <Route
           path="/login"
@@ -104,6 +106,14 @@ export function App() {
               </GuardTela>
             }
           />
+          <Route
+            path="/notas-coleta"
+            element={
+              <GuardTela tela="notas-coleta">
+                <NotasColetaPage />
+              </GuardTela>
+            }
+          />
           <Route path="/chamados" element={<Navigate to="/chamados/abrir" replace />} />
           <Route
             path="/chamados/abrir"
@@ -146,14 +156,6 @@ export function App() {
             }
           />
           <Route
-            path="/numeros-whatsapp"
-            element={
-              <GuardTela tela="numeros-whatsapp">
-                <NumerosWhatsappPage />
-              </GuardTela>
-            }
-          />
-          <Route
             path="/falhas-integracao"
             element={
               <GuardTela tela="falhas-integracao">
@@ -177,6 +179,7 @@ export function App() {
         <Route path="/" element={<DefaultRedirect />} />
         <Route path="*" element={<DefaultRedirect />} />
       </Routes>
+      </ChamadosProvider>
     </PrototypeProvider>
   );
 }

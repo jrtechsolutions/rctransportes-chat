@@ -28,15 +28,15 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 4px 8px 4px 4px;
+  gap: 10px;
+  padding: 4px 0 4px 4px;
   margin-bottom: 20px;
 }
 
 .logo {
-  width: 48px;
-  height: 48px;
-  min-width: 44px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
   display: block;
   object-fit: contain;
   mix-blend-mode: lighten;
@@ -352,6 +352,144 @@
   font-size: 11px;
   color: var(--mono);
   white-space: nowrap;
+}
+
+/* Botão ☰ — à direita do logo com o menu aberto, acima do logo com ele recolhido */
+.menuBtn {
+  order: 2;
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.menuBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.brandMeta {
+  order: 1;
+}
+
+/* ——— Menu lateral recolhido: só os ícones ——— */
+.shell {
+  transition: grid-template-columns 0.2s ease;
+}
+
+.recolhida {
+  grid-template-columns: 76px 1fr;
+}
+
+.recolhida .sidebarInner {
+  padding: 16px 10px;
+  align-items: center;
+}
+
+.recolhida .brand {
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin-bottom: 18px;
+  justify-content: center;
+}
+
+.recolhida .menuBtn {
+  order: -1;
+  margin-left: 0;
+  width: 42px;
+  height: 38px;
+}
+
+.recolhida .logo {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+}
+
+.recolhida .brandMeta,
+.recolhida .perfilBox,
+.recolhida .navText,
+.recolhida .tvLink span,
+.recolhida .userInfo {
+  display: none;
+}
+
+.recolhida .nav {
+  width: 100%;
+  padding: 0;
+}
+
+.recolhida .navGroup {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.recolhida .navGroup:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.recolhida .navLabel {
+  display: none;
+}
+
+.recolhida .navItems {
+  gap: 2px;
+  align-items: center;
+}
+
+.recolhida .navItem {
+  width: 42px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+
+.recolhida .navIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.recolhida .active {
+  background: var(--azul);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.recolhida .active::before {
+  display: none;
+}
+
+.recolhida .navFooter {
+  width: 100%;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  gap: 8px;
+}
+
+.recolhida .tvLink {
+  width: 42px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+
+.recolhida .userCard {
+  flex-direction: column;
+  padding: 8px 6px;
+  gap: 8px;
 }
 
 .main {

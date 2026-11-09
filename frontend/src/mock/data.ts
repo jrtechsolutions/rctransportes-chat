@@ -1,6 +1,7 @@
 import type {
   AgenteSetor,
   ChamadoMock,
+  ClienteMock,
   Conversa,
   KmRegistro,
   MotoristaMock,
@@ -21,12 +22,12 @@ export const TODAS_TELAS: { id: TelaId; label: string }[] = [
   { id: 'ocorrencias', label: 'Ocorrências' },
   { id: 'pendencias', label: 'Pendências' },
   { id: 'km', label: 'Check-in KM' },
+  { id: 'notas-coleta', label: 'Notas de coleta' },
   { id: 'abrir-chamado', label: 'Abrir chamado' },
   { id: 'trabalhar-chamado', label: 'Trabalhar chamado' },
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'relatorios', label: 'Relatórios' },
-  { id: 'usuarios', label: 'Usuários e motoristas' },
-  { id: 'numeros-whatsapp', label: 'Números de WhatsApp' },
+  { id: 'usuarios', label: 'Usuários e cadastros' },
 ];
 
 /** Telas exclusivas do Administrador — não aparecem como permissão liberável em Usuários */
@@ -45,12 +46,12 @@ export const TELA_ROTA: Record<TelaId, string> = {
   ocorrencias: '/ocorrencias',
   pendencias: '/pendencias',
   km: '/km',
+  'notas-coleta': '/notas-coleta',
   'abrir-chamado': '/chamados/abrir',
   'trabalhar-chamado': '/chamados/trabalhar',
   dashboard: '/dashboard',
   relatorios: '/relatorios',
   usuarios: '/usuarios',
-  'numeros-whatsapp': '/numeros-whatsapp',
   'falhas-integracao': '/falhas-integracao',
   auditoria: '/auditoria',
 };
@@ -58,12 +59,12 @@ export const TELA_ROTA: Record<TelaId, string> = {
 /** Grupos da sidebar — itens filtrados pelas telas liberadas do usuário */
 export const NAV_GROUPS: { label: string; telas: TelaId[] }[] = [
   { label: 'Atendimento', telas: ['conversas'] },
-  { label: 'Ocorrências', telas: ['ocorrencias', 'pendencias', 'km'] },
+  { label: 'Ocorrências', telas: ['ocorrencias', 'pendencias', 'km', 'notas-coleta'] },
   { label: 'Chamados de Expedição', telas: ['abrir-chamado', 'trabalhar-chamado'] },
   { label: 'Gestão', telas: ['dashboard', 'relatorios'] },
   {
     label: 'Administração',
-    telas: ['config-setor', 'usuarios', 'numeros-whatsapp', 'falhas-integracao', 'auditoria'],
+    telas: ['config-setor', 'usuarios', 'falhas-integracao', 'auditoria'],
   },
 ];
 
@@ -482,21 +483,6 @@ export const PENDENCIAS: Pendencia[] = [
 
 const PENDENCIAS_VENCIDAS = PENDENCIAS.filter((p) => p.status === 'Vencida').length;
 
-/** Números de WhatsApp da RC e como cada um roteia as conversas */
-export const NUMEROS_WHATSAPP: {
-  id: string;
-  numero: string;
-  uso: string;
-  setor: string;
-  modo: 'Direto (sem menu)' | 'Menu do chatbot (número central)' | 'Identificação automática por texto/número';
-}[] = [
-  { id: 'w1', numero: '(11) 94000-1001', uso: 'Atendimento motorista São Paulo', setor: 'Operacional', modo: 'Direto (sem menu)' },
-  { id: 'w2', numero: '(19) 94000-1002', uso: 'Atendimento motorista interior', setor: 'Operacional', modo: 'Direto (sem menu)' },
-  { id: 'w3', numero: '(19) 94000-1003', uso: 'Atendimento ao cliente', setor: 'Comercial / Financeiro', modo: 'Menu do chatbot (número central)' },
-  { id: 'w4', numero: '(19) 94000-1004', uso: 'Recebimento de notas/manifesto/odômetro', setor: 'Operacional', modo: 'Identificação automática por texto/número' },
-  { id: 'w5', numero: '(19) 94000-1005', uso: 'Atendimento cliente Policom', setor: 'Comercial', modo: 'Identificação automática por texto/número' },
-];
-
 export const FALHAS_INTEGRACAO: FalhaIntegracao[] = [
   { id: 'f1', dataHora: '16/10/2026 08:47', numeroOrigem: '(19) 98111-4455', tipo: 'Mensagem não entregue', conteudo: 'Ricardo, aguarde 5 minutos que o cliente vai descer para receber a mercadoria', status: 'Pendente de revisão' },
   { id: 'f2', dataHora: '16/10/2026 08:31', numeroOrigem: '(19) 94000-1004', tipo: 'Webhook não processado', conteudo: '[imagem] Foto do odômetro — placa EFG4H56', status: 'Pendente de revisão' },
@@ -526,6 +512,10 @@ export const KM_REGISTROS: KmRegistro[] = [
   { id: 'k4', motorista: 'José da Silva', data: '15/10/2026', kmInicial: 142100, kmFinal: 142350, status: 'ok' },
   { id: 'k5', motorista: 'Paulo Henrique', data: '15/10/2026', kmInicial: 55670, kmFinal: 55910, status: 'ok' },
   { id: 'k6', motorista: 'Ricardo Ferreira', data: '15/10/2026', kmInicial: 89180, kmFinal: 89420, status: 'ok' },
+  // Leitura errada da foto: faltou um dígito no km final
+  { id: 'k7', motorista: 'Marcos Oliveira', data: '15/10/2026', kmInicial: 210640, kmFinal: 21088, status: 'ok', fotoMock: { final: 210880 } },
+  // Leitura errada da foto: 3 lido como 8 no km inicial
+  { id: 'k8', motorista: 'Paulo Henrique', data: '14/10/2026', kmInicial: 55870, kmFinal: 55670, status: 'ok', fotoMock: { inicial: 55370 } },
 ];
 
 export const USUARIOS: UsuarioMock[] = [
@@ -557,10 +547,23 @@ export const USUARIOS: UsuarioMock[] = [
     email: 'ricardo.alves@rctransportes.com.br',
     setor: 'Operacional',
     admin: false,
-    telas: ['conversas', 'ocorrencias', 'pendencias', 'km', 'trabalhar-chamado'],
+    telas: ['conversas', 'ocorrencias', 'pendencias', 'km', 'notas-coleta', 'trabalhar-chamado'],
+    unidadesChamado: ['Matriz'],
     status: 'Ativo',
     visualizarComo: true,
-    labelSeletor: 'Ricardo (operacional)',
+    labelSeletor: 'Ricardo (operacional · Matriz)',
+  },
+  {
+    id: 'u-bruno',
+    nome: 'Bruno Teixeira',
+    email: 'bruno.teixeira@rctransportes.com.br',
+    setor: 'Operacional',
+    admin: false,
+    telas: ['trabalhar-chamado'],
+    unidadesChamado: ['Filial'],
+    status: 'Ativo',
+    visualizarComo: true,
+    labelSeletor: 'Bruno (expedição · Filial)',
   },
   {
     id: 'u-fernanda',
@@ -617,11 +620,41 @@ export const USUARIOS: UsuarioMock[] = [
 export const USUARIOS_SELETOR = USUARIOS.filter((u) => u.visualizarComo);
 
 export const MOTORISTAS: MotoristaMock[] = [
-  { id: 'mo1', nome: 'José da Silva', telefone: '(19) 98877-1100', tipo: 'Funcionario', placa: 'ABC1D23', status: 'Ativo' },
-  { id: 'mo2', nome: 'Ricardo Ferreira', telefone: '(19) 98111-4455', tipo: 'Funcionario', placa: 'EFG4H56', status: 'Ativo' },
+  { id: 'mo1', nome: 'José da Silva', telefone: '(19) 98877-1100', tipo: 'Motorista', placa: 'ABC1D23', status: 'Ativo' },
+  { id: 'mo2', nome: 'Ricardo Ferreira', telefone: '(19) 98111-4455', tipo: 'Motorista', placa: 'EFG4H56', status: 'Ativo' },
   { id: 'mo3', nome: 'Marcos Oliveira', telefone: '(11) 97766-2200', tipo: 'Agregado', placa: 'JKL7M89', status: 'Ativo' },
   { id: 'mo4', nome: 'Paulo Henrique', telefone: '(19) 99222-3344', tipo: 'Agregado', placa: 'NOP0Q12', status: 'Ativo' },
-  { id: 'mo5', nome: 'Antônio Carlos', telefone: '(19) 98333-5566', tipo: 'Funcionario', placa: null, status: 'Inativo' },
+  { id: 'mo5', nome: 'Antônio Carlos', telefone: '(19) 98333-5566', tipo: 'Motorista', placa: null, status: 'Inativo' },
+  { id: 'mo6', nome: 'Diego Santos', telefone: '(19) 99410-2288', tipo: 'Ajudante', placa: null, status: 'Ativo' },
+  { id: 'mo7', nome: 'Wellington Rocha', telefone: '(19) 99587-6610', tipo: 'Ajudante', placa: null, status: 'Ativo' },
+];
+
+/** Fluxos de chatbot que podem ser atribuídos a um cliente cadastrado */
+export const CHATBOT_FLUXOS = [
+  {
+    id: 'padrao',
+    nome: 'Menu padrão de clientes',
+    desc: 'Rastreamento, coleta, financeiro e falar com atendente',
+  },
+  {
+    id: 'contrato',
+    nome: 'Cliente com contrato',
+    desc: 'Atalhos para rastreio por NF, solicitar coleta e 2ª via de CT-e',
+  },
+  {
+    id: 'policom',
+    nome: 'Atendimento exclusivo Policom',
+    desc: 'Vai direto para o atendente dedicado, sem menu',
+  },
+];
+
+export const CLIENTES: ClienteMock[] = [
+  { id: 'cl1', empresa: 'Distribuidora ABC Ltda', cnpj: '12345678000190', contato: 'Sandra Ribeiro (expedição)', whatsapp1: '(19) 3456-7890', whatsapp2: '(19) 99654-1020', chatbot: 'contrato', status: 'Ativo' },
+  { id: 'cl2', empresa: 'Metalúrgica Campinas SA', cnpj: '23456789000101', contato: 'Rogério Tavares (logística)', whatsapp1: '(19) 3234-5566', whatsapp2: null, chatbot: 'contrato', status: 'Ativo' },
+  { id: 'cl3', empresa: 'Alimentos Vale Verde Ltda', cnpj: '34567890000112', contato: 'Patrícia Gomes (compras)', whatsapp1: '(19) 3678-9012', whatsapp2: '(19) 98123-4477', chatbot: 'padrao', status: 'Ativo' },
+  { id: 'cl4', empresa: 'Policom Distribuição Ltda', cnpj: '90123456000178', contato: 'Marcelo Antunes', whatsapp1: '(11) 3321-8800', whatsapp2: '(11) 99812-3300', chatbot: 'policom', status: 'Ativo' },
+  { id: 'cl5', empresa: 'Plásticos Sumaré Ltda', cnpj: '45678901000123', contato: 'Eduardo Nunes', whatsapp1: '(19) 3873-2210', whatsapp2: null, chatbot: 'padrao', status: 'Ativo' },
+  { id: 'cl6', empresa: 'Farmacêutica BioLife Ltda', cnpj: '56789012000134', contato: 'Luciana Prado (expedição)', whatsapp1: '(19) 3741-6600', whatsapp2: '(19) 99701-5522', chatbot: 'padrao', status: 'Inativo' },
 ];
 
 const agora = Date.now();
@@ -637,18 +670,30 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
     tipoVeiculo: 'Truck',
     peso: '8.400 kg',
     horarioLimite: '16:00',
+    unidade: 'Matriz',
     status: 'ABERTO',
-    criadoPorId: 'u2',
+    criadoPorId: 'u-fernanda',
     assumidoPorId: null,
     resolvidoEm: null,
     emailConfirmacaoEnviadoEm: null,
     criadoEm: minAgo(12),
-    atualizadoEm: minAgo(12),
-    criadoPor: { id: 'u2', nome: 'Carlos Mendes', email: 'carlos.mendes@rctransportes.com.br' },
+    atualizadoEm: minAgo(4),
+    criadoPor: { id: 'u-fernanda', nome: 'Fernanda Costa', email: 'fernanda.costa@rctransportes.com.br' },
     assumidoPor: null,
     emailOriginalTexto:
       'Prezados,\nSolicitamos coleta urgente para Valinhos.\nNF 45281, Truck 8.400 kg, limite 16h.\nAtt,\nExpedição ABC',
-    observacoes: [],
+    observacoes: [
+      {
+        id: 'obs-c1',
+        chamadoId: 'ch1',
+        autorId: 'u-fernanda',
+        texto: 'Cliente pediu para chegar pela portaria 2 (Rua das Indústrias). Doca fecha às 15h30.',
+        criadoEm: minAgo(4),
+        autor: { id: 'u-fernanda', nome: 'Fernanda Costa' },
+        origem: 'solicitante',
+      },
+    ],
+    complementoNovo: true,
   },
   {
     id: 'ch2',
@@ -659,14 +704,15 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
     tipoVeiculo: 'Carreta',
     peso: '24.000 kg',
     horarioLimite: '18:00',
+    unidade: 'Matriz',
     status: 'EM_ANDAMENTO',
-    criadoPorId: 'u3',
+    criadoPorId: 'u-fernanda',
     assumidoPorId: 'u4',
     resolvidoEm: null,
     emailConfirmacaoEnviadoEm: null,
     criadoEm: minAgo(45),
     atualizadoEm: minAgo(20),
-    criadoPor: { id: 'u3', nome: 'Ana Paula Souza', email: 'ana.souza@rctransportes.com.br' },
+    criadoPor: { id: 'u-fernanda', nome: 'Fernanda Costa', email: 'fernanda.costa@rctransportes.com.br' },
     assumidoPor: { id: 'u4', nome: 'Roberto Lima' },
     emailOriginalTexto: 'Precisamos de carreta para Sorocaba, NF 99102, 24t, limite 18h.',
     observacoes: [
@@ -689,6 +735,7 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
     tipoVeiculo: 'VUC',
     peso: '2.100 kg',
     horarioLimite: '14:30',
+    unidade: 'Filial',
     status: 'ABERTO',
     criadoPorId: 'u2',
     assumidoPorId: null,
@@ -710,6 +757,7 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
     tipoVeiculo: 'Truck',
     peso: '6.500 kg',
     horarioLimite: '17:00',
+    unidade: 'Filial',
     status: 'EM_ANDAMENTO',
     criadoPorId: 'u5',
     assumidoPorId: 'u2',
@@ -731,6 +779,7 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
     tipoVeiculo: 'VUC',
     peso: '1.800 kg',
     horarioLimite: '12:00',
+    unidade: 'Matriz',
     status: 'RESOLVIDO',
     criadoPorId: 'u3',
     assumidoPorId: 'u3',
@@ -749,6 +798,46 @@ export const CHAMADOS_MOCK: ChamadoMock[] = [
         texto: 'Entrega concluída. Falha no envio do e-mail.',
         criadoEm: minAgo(60),
         autor: { id: 'u3', nome: 'Ana Paula Souza' },
+      },
+    ],
+  },
+  {
+    id: 'ch6',
+    clienteNome: 'Têxtil Americana Ind. e Com. Ltda',
+    clienteEmail: 'logistica@textilamericana.com.br',
+    destino: 'Jundiaí - SP',
+    notaFiscal: 'NF 5530',
+    tipoVeiculo: 'Toco',
+    peso: '4.200 kg',
+    horarioLimite: '11:00',
+    unidade: 'Filial',
+    status: 'RESOLVIDO',
+    criadoPorId: 'u-fernanda',
+    assumidoPorId: 'u2',
+    resolvidoEm: minAgo(240),
+    emailConfirmacaoEnviadoEm: minAgo(240),
+    criadoEm: minAgo(420),
+    atualizadoEm: minAgo(240),
+    criadoPor: { id: 'u-fernanda', nome: 'Fernanda Costa', email: 'fernanda.costa@rctransportes.com.br' },
+    assumidoPor: { id: 'u2', nome: 'Carlos Mendes' },
+    emailOriginalTexto: 'Coleta para Jundiaí, Toco 4.200 kg, NF 5530, limite 11h.',
+    observacoes: [
+      {
+        id: 'obs-c6',
+        chamadoId: 'ch6',
+        autorId: 'u-fernanda',
+        texto: 'Cliente confirmou que a carga já está paletizada.',
+        criadoEm: minAgo(400),
+        autor: { id: 'u-fernanda', nome: 'Fernanda Costa' },
+        origem: 'solicitante',
+      },
+      {
+        id: 'obs-c6b',
+        chamadoId: 'ch6',
+        autorId: 'u2',
+        texto: 'Coletado às 10h40 pelo José.',
+        criadoEm: minAgo(245),
+        autor: { id: 'u2', nome: 'Carlos Mendes' },
       },
     ],
   },

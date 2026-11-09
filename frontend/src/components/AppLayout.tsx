@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import logoBranco from '../assets/rc-logo-branco.png';
 import { initials } from '../lib/sanitize';
@@ -6,11 +6,33 @@ import { NAV_GROUPS, TELA_LABEL, TELA_ROTA } from '../mock/data';
 import { usePrototype } from '../mock/PrototypeContext';
 import type { TelaId } from '../mock/types';
 import { AdvancedSearch } from './AdvancedSearch';
-import { IconChevron, IconLogout, IconTv, NavIcon } from './NavIcons';
+import { IconChevron, IconLogout, IconMenu, IconTv, NavIcon } from './NavIcons';
 import styles from './AppLayout.module.css';
+
+const COLLAPSED_KEY = 'rc-sidebar-recolhida';
+
+function lerRecolhida(): boolean {
+  try {
+    return localStorage.getItem(COLLAPSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
 
 export function AppLayout() {
   const { usuario, setUsuarioId, logout, hasTela, homePath, usuariosSeletor } = usePrototype();
+  const [recolhida, setRecolhida] = useState(lerRecolhida);
+
+  const alternarMenu = () => {
+    setRecolhida((v) => {
+      try {
+        localStorage.setItem(COLLAPSED_KEY, v ? '0' : '1');
+      } catch {
+        /* sem storage — só não lembra a preferência */
+      }
+      return !v;
+    });
+  };
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,10 +58,20 @@ export function AppLayout() {
   };
 
   return (
-    <div className={styles.shell}>
+    <div className={recolhida ? `${styles.shell} ${styles.recolhida}` : styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarInner}>
           <div className={styles.brand}>
+            <button
+              type="button"
+              className={styles.menuBtn}
+              onClick={alternarMenu}
+              aria-label={recolhida ? 'Expandir menu lateral' : 'Recolher menu lateral'}
+              aria-expanded={!recolhida}
+              title={recolhida ? 'Expandir menu' : 'Recolher menu'}
+            >
+              <IconMenu />
+            </button>
             <img
               src={logoBranco}
               alt="RC Transportes"
@@ -83,6 +115,7 @@ export function AppLayout() {
                     <NavLink
                       key={link.to}
                       to={link.to}
+                      title={recolhida ? link.label : undefined}
                       className={({ isActive }) =>
                         isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
                       }
@@ -99,14 +132,24 @@ export function AppLayout() {
           </nav>
 
           <div className={styles.navFooter}>
-            <a href="/painel-tv" target="_blank" rel="noopener" className={styles.tvLink}>
+            <a
+              href="/painel-tv"
+              target="_blank"
+              rel="noopener"
+              className={styles.tvLink}
+              title={recolhida ? 'Painel da TV' : undefined}
+            >
               <IconTv />
               <span>Painel da TV</span>
               <span className={styles.tvExt}>↗</span>
             </a>
 
             <div className={styles.userCard}>
-              <div className={styles.avatar} aria-hidden>
+              <div
+                className={styles.avatar}
+                aria-hidden
+                title={recolhida ? `${usuario.nome} · ${usuario.admin ? 'Administrador' : usuario.setor}` : undefined}
+              >
                 {initials(usuario.nome)}
               </div>
               <div className={styles.userInfo}>

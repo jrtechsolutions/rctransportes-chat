@@ -240,6 +240,22 @@
       background: #e8ebe6;
     }
 
+    .shot-tag.novo {
+      background: var(--verde-l);
+      color: var(--verde);
+      border-color: #b8d4c4;
+    }
+    .novidades {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-left: 4px solid var(--verde);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 14px;
+    }
+    .novidades ul { margin: 8px 0 0; padding-left: 20px; }
+    .novidades li { margin: 3px 0; }
+    .validar-titulo { margin: 28px 0 8px; font-size: 17px; }
     .pair {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -334,7 +350,7 @@
 
   <header class="cover">
     <div class="cover-inner">
-      <div class="cover-label">Documento de apresentação · Escopo visual + tecnologias</div>
+      <div class="cover-label">Documento de apresentação · Escopo visual + tecnologias · revisão nov/2026</div>
       <h1>Sistema de Gestão de Atendimentos</h1>
       <p>
         Protótipo navegável (MVP visual) para alinhamento de escopo com a RC Transportes —
@@ -353,13 +369,14 @@
     <ol>
       <li><a href="#visao">Visão geral do MVP</a></li>
       <li><a href="#stack">Stack tecnológico (frontend, backend, banco, segurança…)</a></li>
-      <li><a href="#acesso">Login e controle de acesso</a></li>
+      <li><a href="#acesso">Login, controle de acesso e menu lateral</a></li>
       <li><a href="#atendimento">Módulo Atendimento (WhatsApp)</a></li>
-      <li><a href="#ocorrencias">Ocorrências e Check-in de KM</a></li>
-      <li><a href="#chamados">Chamados de Expedição + Painel TV</a></li>
+      <li><a href="#ocorrencias">Ocorrências, Pendências e Check-in de KM</a></li>
+      <li><a href="#notas">Notas de coleta (DANFE por foto)</a></li>
+      <li><a href="#chamados">Chamados de Expedição (Matriz e Filial) + Painel TV</a></li>
       <li><a href="#gestao">Dashboard e Relatórios</a></li>
-      <li><a href="#admin">Administração</a></li>
-      <li><a href="#proposta">O que este MVP entrega / próximos passos</a></li>
+      <li><a href="#admin">Administração e cadastros</a></li>
+      <li><a href="#proposta">O que este MVP entrega / pontos para validar</a></li>
     </ol>
   </nav>
 
@@ -368,32 +385,54 @@
       <div class="section-num">01 · Visão geral</div>
       <h2>O que o sistema cobre</h2>
       <p>
-        Um único ambiente para atendimento via WhatsApp, ocorrências operacionais, check-in de KM,
-        chamados de expedição (com painel de TV), indicadores gerenciais e cadastro de usuários —
-        com permissões por tela (não por “perfil fixo”).
+        Um único ambiente para atendimento via WhatsApp, ocorrências e pendências operacionais, check-in de KM
+        e notas de coleta lidos por foto, chamados de expedição por unidade (com painel de TV), indicadores
+        gerenciais e cadastros de usuários, motoristas e clientes — com permissões por tela.
       </p>
     </div>
     <div class="intro-grid">
       <div class="intro-card">
         <strong>Atendimento</strong>
-        <span>Inbox estilo WhatsApp, SLA, transferência, encerramento com motivo/resultado, observação interna.</span>
+        <span>Inbox estilo WhatsApp, SLA, transferência, encerramento com a lista completa de 149 motivos e 19 resultados da RC.</span>
       </div>
       <div class="intro-card">
-        <strong>Ocorrências & KM</strong>
-        <span>Protocolos com prioridade/prazo, abertura manual, histórico de km com fotos mockadas.</span>
+        <strong>Ocorrências, Pendências &amp; KM</strong>
+        <span>Protocolos com prioridade/prazo, pendências com responsável e prazo, KM lido da foto com correção manual.</span>
+      </div>
+      <div class="intro-card">
+        <strong>Notas de coleta</strong>
+        <span>Motorista, agregado ou ajudante envia a foto da DANFE; o sistema lê emitente, CNPJ, número e chave de acesso e confere a chave.</span>
       </div>
       <div class="intro-card">
         <strong>Expedição</strong>
-        <span>Abrir e trabalhar chamado + Painel TV full-screen (destaque âmbar para chamado novo &lt; 3 min).</span>
+        <span>Chamados para Matriz ou Filial, acompanhamento por quem abriu (com complementos) e Painel TV full-screen.</span>
       </div>
       <div class="intro-card">
-        <strong>Gestão & Admin</strong>
-        <span>Dashboard (~13 KPIs + gráficos), 9 relatórios, config. de setor, usuários e motoristas.</span>
+        <strong>Gestão</strong>
+        <span>Dashboard (~15 KPIs + gráficos, incluindo pendências vencidas) e 10 relatórios com exportação Excel/PDF.</span>
+      </div>
+      <div class="intro-card">
+        <strong>Administração</strong>
+        <span>Config. de setor, usuários com unidade de expedição, motoristas/agregados/ajudantes, clientes com chatbot próprio, falhas de integração e auditoria.</span>
       </div>
     </div>
     <div class="note" style="margin-top:24px">
       <strong>Importante:</strong> as telas abaixo são o <em>protótipo visual</em> (dados fictícios) para fechar escopo e preço.
       A seção seguinte descreve as <strong>linguagens e tecnologias</strong> que serão usadas na implementação real.
+    </div>
+    <div class="novidades">
+      <strong>Incluído nesta revisão do protótipo</strong>
+      <ul>
+        <li>Pendências como entidade própria (tela, vínculo com ocorrência/atendimento, indicadores e relatório)</li>
+        <li>Lista completa de motivos e resultados enviada pela RC</li>
+        <li>Notas de coleta: leitura automática da DANFE enviada por foto</li>
+        <li>Correção manual do KM quando a foto do odômetro for lida errado</li>
+        <li>Chamados de expedição divididos em Matriz e Filial, com acompanhamento e complementos de quem abriu</li>
+        <li>Cadastro de clientes (2 WhatsApp + chatbot por cliente) e tipo Ajudante no cadastro de motoristas</li>
+        <li>Unidade de expedição e criação de setor no cadastro de usuário</li>
+        <li>Telas de falhas de integração do WhatsApp e log de auditoria</li>
+        <li>Menu lateral recolhível (só ícones)</li>
+      </ul>
     </div>
   </section>
 
@@ -439,8 +478,9 @@
         <ul>
           <li><strong>PostgreSQL</strong> — banco relacional principal</li>
           <li><strong>Prisma Migrate</strong> — versionamento do schema</li>
-          <li>Entidades: usuários, setores, atendimentos, mensagens, ocorrências, KM, chamados, números WhatsApp</li>
-          <li>Índices e enums tipados no schema (status, papéis, direção da mensagem…)</li>
+          <li>Entidades: usuários, setores, atendimentos, mensagens, ocorrências, pendências, KM, notas de coleta, chamados, clientes, motoristas, números WhatsApp</li>
+          <li>Registro de auditoria e de falhas de integração</li>
+          <li>Índices e enums tipados no schema (status, papéis, unidade, direção da mensagem…)</li>
         </ul>
       </article>
 
@@ -452,16 +492,20 @@
           <li><strong>Cookies HTTP-only</strong> — refresh token</li>
           <li><strong>Rate limit</strong> (@fastify/rate-limit) — proteção contra abuso</li>
           <li><strong>CORS</strong> configurado + validação Zod em rotas</li>
-          <li><strong>Permissões por tela</strong> — menu e rotas liberadas por usuário (não perfil genérico)</li>
+          <li><strong>Permissões por tela</strong> + unidade de expedição (Matriz/Filial) por usuário</li>
+          <li><strong>Log de auditoria</strong> — quem alterou o quê (atendimentos, ocorrências, pendências, KM, cadastros, setores)</li>
           <li>Socket autenticado com JWT no handshake</li>
         </ul>
       </article>
 
       <article class="stack-card">
-        <h3><span class="stack-pill">Integrações</span> WhatsApp e tempo real</h3>
+        <h3><span class="stack-pill">Integrações</span> WhatsApp, IA e tempo real</h3>
         <ul>
           <li><strong>WhatsApp Business API</strong> — webhook de entrada + envio de mensagens</li>
-          <li>Números separados (clientes / motoristas) no cadastro</li>
+          <li>Número cadastrado (cliente, motorista, agregado ou ajudante) define o chatbot enviado</li>
+          <li><strong>Leitura de imagem com IA</strong> — odômetro (KM) e DANFE (emitente, CNPJ, número, chave)</li>
+          <li>Leitura do <strong>código de barras</strong> da DANFE + conferência da chave (dígito verificador, CNPJ e número)</li>
+          <li>Registro de falhas de integração com reprocessamento</li>
           <li><strong>Socket.io</strong> — fila ao vivo por setor e painel de TV</li>
           <li>E-mail de confirmação nos chamados de expedição</li>
         </ul>
@@ -484,6 +528,7 @@
       <span class="stack-chip">PostgreSQL</span>
       <span class="stack-chip">MSAL · JWT · Rate-limit</span>
       <span class="stack-chip">WhatsApp API · Socket.io</span>
+      <span class="stack-chip">IA de leitura de imagem</span>
       <span class="stack-chip">Zod · Nodemailer</span>
     </div>
   </section>
@@ -491,7 +536,7 @@
   <section class="section" id="acesso">
     <div class="section-head">
       <div class="section-num">03 · Acesso</div>
-      <h2>Login e permissões</h2>
+      <h2>Login, permissões e menu lateral</h2>
       <p>Entrada corporativa (Microsoft) e menu montado dinamicamente conforme as telas liberadas de cada usuário.</p>
     </div>
 
@@ -509,9 +554,9 @@
         <div class="shot-caption">
           <span class="shot-tag">Principal</span>
           <h3>Visão do atendente (Carlos)</h3>
-          <p>Sidebar reduzida — só Conversas. Ideal para demonstrar permissão mínima.</p>
+          <p>Menu reduzido — só Conversas. Ideal para demonstrar permissão mínima.</p>
         </div>
-        <img src="prints/02-atendimento-carlos.png" alt="Atendimento visão Carlos" />
+        <img src="prints/atualizacao/02-atendimento-carlos.png" alt="Atendimento visão Carlos" />
       </article>
       <article class="shot">
         <div class="shot-caption">
@@ -519,8 +564,25 @@
           <h3>Visão do administrador (Paulo)</h3>
           <p>Menu completo: Atendimento, Ocorrências, Chamados, Gestão e Administração.</p>
         </div>
-        <img src="prints/03-atendimento-admin.png" alt="Atendimento visão Admin" />
+        <img src="prints/atualizacao/20-menu-lateral-aberto.png" alt="Atendimento visão Admin" />
       </article>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Menu lateral recolhível</h3>
+        <p>O botão ☰ dentro do menu reduz a barra lateral para só os ícones (o nome da tela aparece ao passar o mouse), liberando espaço para o conteúdo. A preferência fica salva no navegador.</p>
+      </div>
+      <img src="prints/atualizacao/21-menu-lateral-recolhido.png" alt="Menu lateral recolhido" />
+    </article>
+
+    <div class="note">
+      <strong>Por que permissões por tela e não 5 perfis fixos?</strong> O briefing lista os perfis, mas não define
+      quais telas cada um enxerga. Com as telas liberadas por usuário (e um atalho “Administrador” que libera tudo),
+      a RC monta qualquer combinação sem depender de uma alteração no sistema — por exemplo, um atendente que
+      também abre chamados, ou uma liderança que só vê Dashboard e Relatórios. Se preferirem, os 5 perfis podem
+      virar “modelos” que já marcam as telas de cada função.
     </div>
   </section>
 
@@ -537,34 +599,43 @@
         <h3>Inbox de conversas</h3>
         <p>Contatos Motorista / Agregado / Cliente / Lead; SLA crítico em vermelho; observação interna com cadeado.</p>
       </div>
-      <img src="prints/03-atendimento-admin.png" alt="Inbox de conversas" />
+      <img src="prints/atualizacao/20-menu-lateral-aberto.png" alt="Inbox de conversas" />
     </article>
 
     <div class="pair">
       <article class="shot">
         <div class="shot-caption">
-          <span class="shot-tag secondary">Secundária</span>
-          <h3>Modal Encerrar atendimento</h3>
-          <p>Motivo (optgroups), resultado do atendimento e descrição complementar.</p>
+          <span class="shot-tag novo">Atualizado</span>
+          <h3>Encerrar atendimento — motivos</h3>
+          <p>Lista completa da RC: 149 motivos agrupados por tipo de contato (Cliente / Motorista) e categoria.</p>
         </div>
-        <img src="prints/04-modal-encerrar.png" alt="Modal encerrar atendimento" />
+        <img src="prints/atualizacao/28-encerrar-motivos-completos.png" alt="Motivos completos no encerramento" />
       </article>
       <article class="shot">
         <div class="shot-caption">
-          <span class="shot-tag secondary">Secundária</span>
-          <h3>Busca avançada</h3>
-          <p>Campos: nome, telefone, protocolo, NF, CT-e, placa, pedido, motivo, resultado, responsável, período.</p>
+          <span class="shot-tag novo">Atualizado</span>
+          <h3>Encerrar atendimento — resultados</h3>
+          <p>Os 19 resultados do atendimento, do “concluído com sucesso” ao “outros motivos, com justificativa”.</p>
         </div>
-        <img src="prints/05-busca-avancada.png" alt="Busca avançada" />
+        <img src="prints/atualizacao/29-encerrar-resultados-completos.png" alt="Resultados completos no encerramento" />
       </article>
     </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag secondary">Secundária</span>
+        <h3>Busca avançada</h3>
+        <p>Campos: nome, telefone, protocolo, NF, CT-e, placa, pedido, motivo, resultado, responsável, período.</p>
+      </div>
+      <img src="prints/atualizacao/05-busca-avancada.png" alt="Busca avançada" />
+    </article>
   </section>
 
   <section class="section" id="ocorrencias">
     <div class="section-head">
       <div class="section-num">05 · Operacional</div>
-      <h2>Ocorrências e Check-in de KM</h2>
-      <p>Independente da conversa do WhatsApp. Protocolos com prioridade e prazo; KM é histórico/relatório (não a interação do motorista).</p>
+      <h2>Ocorrências, Pendências e Check-in de KM</h2>
+      <p>Independente da conversa do WhatsApp. Ocorrências com prioridade e prazo; pendências com responsável e prazo; KM lido da foto do odômetro.</p>
     </div>
 
     <article class="shot">
@@ -573,52 +644,211 @@
         <h3>Lista de ocorrências</h3>
         <p>Filtros por status, prioridade, responsável e período. Botão “Nova ocorrência” para abertura manual.</p>
       </div>
-      <img src="prints/06-ocorrencias.png" alt="Lista de ocorrências" />
+      <img src="prints/atualizacao/06-ocorrencias.png" alt="Lista de ocorrências" />
     </article>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag secondary">Secundária</span>
+        <span class="shot-tag novo">Atualizado</span>
         <h3>Modal Nova ocorrência</h3>
-        <p>Cliente/motorista, motivo, prioridade, prazo e responsável — gera protocolo e entra como Aberta.</p>
+        <p>Cliente/motorista, motivo (mesma lista completa de 149 motivos), prioridade, prazo e responsável — gera protocolo e entra como Aberta.</p>
       </div>
-      <img src="prints/07-nova-ocorrencia.png" alt="Modal nova ocorrência" />
+      <img src="prints/atualizacao/30-nova-ocorrencia-motivo.png" alt="Modal nova ocorrência" />
     </article>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
-        <h3>Check-in de KM</h3>
-        <p>Histórico com km inicial/final, km rodado e status ok / pendente de fechamento (registros via WhatsApp).</p>
+        <span class="shot-tag novo">Novo</span>
+        <h3>Pendências</h3>
+        <p>Tarefas com responsável e prazo, vinculadas a uma ocorrência, a um atendimento ou avulsas. Vencidas aparecem primeiro e em vermelho; filtros por status, responsável e prazo.</p>
       </div>
-      <img src="prints/08-km.png" alt="Check-in de KM" />
+      <img src="prints/atualizacao/22-pendencias.png" alt="Lista de pendências" />
     </article>
-  </section>
 
-  <section class="section" id="chamados">
-    <div class="section-head">
-      <div class="section-num">06 · Expedição</div>
-      <h2>Chamados + Painel de TV</h2>
-      <p>Abrir chamado por formulário estruturado (sem IA), trabalhar na fila e exibir na TV do setor com alerta visual/sonoro.</p>
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Nova pendência</h3>
+          <p>Origem opcional (ocorrência ou atendimento), descrição, responsável, prazo e prioridade.</p>
+        </div>
+        <img src="prints/atualizacao/23-nova-pendencia.png" alt="Modal nova pendência" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Pendências dentro da ocorrência</h3>
+          <p>O detalhe da ocorrência lista as pendências vinculadas e permite criar uma nova já com a origem preenchida.</p>
+        </div>
+        <img src="prints/atualizacao/24-ocorrencia-pendencias-vinculadas.png" alt="Pendências vinculadas à ocorrência" />
+      </article>
+    </div>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Alterar responsável</h3>
+          <p>Troca o responsável da pendência; a justificativa fica no log de auditoria.</p>
+        </div>
+        <img src="prints/atualizacao/25-pendencia-alterar-responsavel.png" alt="Alterar responsável da pendência" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Definir / alterar prazo</h3>
+          <p>Novo prazo com o prazo atual como referência.</p>
+        </div>
+        <img src="prints/atualizacao/26-pendencia-definir-prazo.png" alt="Definir prazo da pendência" />
+      </article>
     </div>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
-        <h3>Abrir chamado</h3>
-        <p>Formulário: cliente, tipo de veículo, peso (kg/t), horário de corte (atalhos) e e-mail original opcional — sem análise automática.</p>
+        <span class="shot-tag secondary">Secundária</span>
+        <h3>Criar pendência a partir da ocorrência</h3>
+        <p>A origem vem travada com o protocolo da ocorrência.</p>
       </div>
-      <img src="prints/09-abrir-chamado.png" alt="Abrir chamado" />
+      <img src="prints/atualizacao/27-ocorrencia-criar-pendencia.png" alt="Criar pendência a partir da ocorrência" />
     </article>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
-        <h3>Trabalhar chamado</h3>
-        <p>Fila (abertos / em andamento / e-mail pendente), detalhe, observação e marcar como resolvido.</p>
+        <span class="shot-tag novo">Atualizado</span>
+        <h3>Check-in de KM</h3>
+        <p>Histórico com km inicial/final e km rodado, lidos da foto do odômetro enviada pelo WhatsApp. Registros com leitura suspeita (km rodado negativo ou acima de 1.500 km no dia) ficam em vermelho, com aviso no topo.</p>
       </div>
-      <img src="prints/10-trabalhar-chamado.png" alt="Trabalhar chamado" />
+      <img src="prints/atualizacao/53-km-leitura-suspeita.png" alt="Check-in de KM" />
     </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Corrigir KM</h3>
+        <p>Se o sistema não entender a foto, a equipe corrige o número olhando a imagem. Mostra o valor lido, recalcula o km rodado, exige o motivo e registra quem corrigiu.</p>
+      </div>
+      <img src="prints/atualizacao/54-km-corrigir.png" alt="Corrigir KM" />
+    </article>
+  </section>
+
+  <section class="section" id="notas">
+    <div class="section-head">
+      <div class="section-num">06 · Notas de coleta</div>
+      <h2>DANFE por foto, sem digitação</h2>
+      <p>
+        Hoje a nota chega por foto no WhatsApp e a chave de acesso é digitada à mão. No sistema, quando o motorista,
+        agregado ou ajudante escolhe “Enviar DANFE” no chatbot, a foto é lida automaticamente: empresa emitente,
+        CNPJ, número/série da NF e chave de acesso.
+      </p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Notas de coleta</h3>
+        <p>Indicadores (recebidas, validadas automaticamente, para revisar, confirmadas manualmente), fluxo em 4 passos, busca por chave/CNPJ/NF/empresa e botão para copiar a chave.</p>
+      </div>
+      <img src="prints/atualizacao/35-notas-coleta.png" alt="Notas de coleta" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Nota validada automaticamente</h3>
+        <p>Foto ao lado dos dados lidos e a conversa do chatbot. A chave é conferida sozinha: 44 dígitos, dígito verificador, modelo 55, e o CNPJ e o número que estão dentro da chave batem com os lidos da nota.</p>
+      </div>
+      <img src="prints/atualizacao/36-nota-validada.png" alt="DANFE validada" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Para revisar — dígito lido errado</h3>
+          <p>Se algo não bate, a nota vai para “Revisar” com os campos em vermelho. Basta corrigir olhando a foto — não é preciso digitar a chave inteira.</p>
+        </div>
+        <img src="prints/atualizacao/37-nota-revisar-digito-errado.png" alt="DANFE para revisar - dígito errado" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Para revisar — foto cortada</h3>
+          <p>Chave incompleta: o botão “Pedir nova foto” responde o motorista pelo WhatsApp.</p>
+        </div>
+        <img src="prints/atualizacao/38-nota-revisar-foto-cortada.png" alt="DANFE para revisar - foto cortada" />
+      </article>
+    </div>
+
+    <div class="note">
+      <strong>Como a leitura funciona:</strong> o código de barras da DANFE é a própria chave de acesso, então o sistema
+      lê o código de barras primeiro (mais preciso) e usa a IA para o texto impresso quando o código estiver amassado ou
+      cortado. Fotos escuras, dobradas ou com várias páginas caem em “Revisar”. <strong>Evolução (fora do MVP):</strong>
+      com a chave validada, buscar o XML completo da nota na SEFAZ (itens, peso, valor) — exige o certificado digital da RC.
+    </div>
+  </section>
+
+  <section class="section" id="chamados">
+    <div class="section-head">
+      <div class="section-num">07 · Expedição</div>
+      <h2>Chamados (Matriz e Filial) + Painel de TV</h2>
+      <p>Abrir chamado para a expedição da Matriz ou da Filial, acompanhar o andamento, complementar informações e exibir na TV do setor com alerta visual/sonoro.</p>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Atualizado</span>
+        <h3>Abrir chamado + Meus chamados</h3>
+        <p>Escolha obrigatória da expedição de destino (Matriz ou Filial), cliente, tipo de veículo, peso (kg/t), horário de corte e e-mail original opcional. Ao lado, a lista dos chamados que a pessoa abriu, com o mesmo status de quem está atendendo.</p>
+      </div>
+      <img src="prints/atualizacao/39-abrir-chamado-meus-chamados.png" alt="Abrir chamado" />
+    </article>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Acompanhamento por quem abriu</h3>
+        <p>Dados só leitura — quem abriu não altera o chamado. Para passar uma informação nova, adiciona um complemento (como um acompanhamento no GLPI), que vai direto para quem está trabalhando no chamado.</p>
+      </div>
+      <img src="prints/atualizacao/40-meu-chamado-complemento.png" alt="Acompanhamento do chamado com complemento" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Aviso de novo complemento</h3>
+          <p>Na fila da expedição, o chamado ganha o badge “Novo complemento” até ser aberto.</p>
+        </div>
+        <img src="prints/atualizacao/41-trabalhar-chamado-novo-complemento.png" alt="Badge novo complemento" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Complemento em destaque</h3>
+          <p>No histórico, o complemento de quem abriu aparece em âmbar, separado das observações internas entre turnos.</p>
+        </div>
+        <img src="prints/atualizacao/42-trabalhar-chamado-complemento-destacado.png" alt="Complemento em destaque" />
+      </article>
+    </div>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Expedição da Filial</h3>
+          <p>Cada usuário vê só os chamados da(s) unidade(s) liberada(s) no cadastro.</p>
+        </div>
+        <img src="prints/atualizacao/43-trabalhar-chamado-filial.png" alt="Chamados da Filial" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Matriz e Filial</h3>
+          <p>Quem trabalha nas duas unidades vê a etiqueta de cada chamado e um filtro Todas / Matriz / Filial.</p>
+        </div>
+        <img src="prints/atualizacao/44-trabalhar-chamado-matriz-e-filial.png" alt="Chamados de Matriz e Filial" />
+      </article>
+    </div>
 
     <div class="pair">
       <article class="shot">
@@ -642,18 +872,18 @@
 
   <section class="section" id="gestao">
     <div class="section-head">
-      <div class="section-num">07 · Gestão</div>
+      <div class="section-num">08 · Gestão</div>
       <h2>Dashboard e Relatórios</h2>
       <p>Visível para quem tiver as telas liberadas (ex.: liderança / administrador).</p>
     </div>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
+        <span class="shot-tag novo">Atualizado</span>
         <h3>Dashboard — indicadores</h3>
-        <p>~13 KPIs (atendimentos, SLA, ocorrências, leads, km, reaberturas, clientes ativos…) + filtros.</p>
+        <p>~15 KPIs (atendimentos, SLA, ocorrências, leads, km, reaberturas, clientes ativos…), agora com <strong>Pendências vencidas</strong> (alerta vermelho) e <strong>Retornos pendentes</strong>.</p>
       </div>
-      <img src="prints/11-dashboard-topo.png" alt="Dashboard KPIs" />
+      <img src="prints/atualizacao/31-dashboard-indicadores-pendencias.png" alt="Dashboard KPIs" />
     </article>
 
     <article class="shot">
@@ -662,24 +892,24 @@
         <h3>Dashboard — gráficos</h3>
         <p>Volume, motivos, SLA por setor, tipos de contato, prioridades, tops, reclamações, produtividade, comparativo.</p>
       </div>
-      <img src="prints/12-dashboard-graficos.png" alt="Dashboard gráficos" />
+      <img src="prints/atualizacao/12-dashboard-graficos.png" alt="Dashboard gráficos" />
     </article>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
+        <span class="shot-tag novo">Atualizado</span>
         <h3>Relatórios</h3>
-        <p>9 cards com exportação visual Excel / PDF (Volume, Motivos, Reclamações, Ocorrências, Históricos, Produtividade, Reincidência, Comparativo).</p>
+        <p>10 relatórios com exportação Excel / PDF: Volume, Motivos, Reclamações, Ocorrências de motoristas, Histórico por cliente e por motorista, Produtividade, Reincidência, Comparativo e <strong>Pendências</strong> (tarefas abertas, responsáveis, prazos e atrasos).</p>
       </div>
-      <img src="prints/13-relatorios.png" alt="Relatórios" />
+      <img src="prints/atualizacao/32-relatorios-pendencias.png" alt="Relatórios" />
     </article>
   </section>
 
   <section class="section" id="admin">
     <div class="section-head">
-      <div class="section-num">08 · Administração</div>
-      <h2>Setor, usuários e motoristas</h2>
-      <p>Configuração de SLA/limites e cadastro com checkboxes de telas liberadas.</p>
+      <div class="section-num">09 · Administração</div>
+      <h2>Setor, usuários e cadastros</h2>
+      <p>Configuração de SLA/limites, usuários com telas e unidade de expedição liberadas, a base de motoristas e clientes, e as telas de controle do administrador.</p>
     </div>
 
     <article class="shot">
@@ -688,34 +918,100 @@
         <h3>Configurações de setor</h3>
         <p>SLA em minutos + limite de atendimentos simultâneos por agente. Aviso Jundiaí → Matriz.</p>
       </div>
-      <img src="prints/14-config-setor.png" alt="Configurações de setor" />
+      <img src="prints/atualizacao/14-config-setor.png" alt="Configurações de setor" />
     </article>
 
     <article class="shot">
       <div class="shot-caption">
-        <span class="shot-tag">Principal</span>
+        <span class="shot-tag novo">Atualizado</span>
         <h3>Usuários do sistema</h3>
-        <p>Nome, e-mail, setor, badges de telas liberadas e status. Administrador vê tudo.</p>
+        <p>Nome, e-mail, setor, telas liberadas e status. Quem trabalha chamados mostra também a unidade (ex.: “Trabalhar chamado · Matriz”).</p>
       </div>
-      <img src="prints/15-usuarios.png" alt="Lista de usuários" />
+      <img src="prints/atualizacao/45-usuarios-unidades.png" alt="Lista de usuários" />
     </article>
 
     <div class="pair">
       <article class="shot">
         <div class="shot-caption">
-          <span class="shot-tag secondary">Secundária</span>
-          <h3>Modal Novo usuário</h3>
-          <p>Toggle Administrador + checkboxes de telas liberadas.</p>
+          <span class="shot-tag novo">Atualizado</span>
+          <h3>Novo usuário — Matriz / Filial</h3>
+          <p>Ao liberar “Trabalhar chamado”, aparece o check de unidade: Matriz, Filial ou as duas.</p>
         </div>
-        <img src="prints/16-novo-usuario.png" alt="Modal novo usuário" />
+        <img src="prints/atualizacao/46-novo-usuario-matriz-filial.png" alt="Novo usuário com unidade de expedição" />
       </article>
       <article class="shot">
         <div class="shot-caption">
-          <span class="shot-tag">Principal</span>
-          <h3>Motoristas e Agregados</h3>
-          <p>Nome, telefone, tipo, placa e status — cadastro separado dos usuários do escritório.</p>
+          <span class="shot-tag novo">Novo</span>
+          <h3>Novo usuário — criar setor</h3>
+          <p>“+ Novo setor” cria o setor na hora e já o seleciona para o usuário.</p>
         </div>
-        <img src="prints/17-motoristas.png" alt="Motoristas e agregados" />
+        <img src="prints/atualizacao/47-novo-usuario-novo-setor.png" alt="Criar novo setor no cadastro de usuário" />
+      </article>
+    </div>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Atualizado</span>
+          <h3>Motoristas, Agregados e Ajudantes</h3>
+          <p>Nome, telefone, tipo (Motorista / Agregado / Ajudante), placa e status — cadastro separado dos usuários do escritório.</p>
+        </div>
+        <img src="prints/atualizacao/48-motoristas-agregados-ajudantes.png" alt="Motoristas, agregados e ajudantes" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Novo ajudante</h3>
+          <p>Para o tipo Ajudante o campo de placa não aparece.</p>
+        </div>
+        <img src="prints/atualizacao/49-novo-ajudante.png" alt="Novo ajudante" />
+      </article>
+    </div>
+
+    <article class="shot">
+      <div class="shot-caption">
+        <span class="shot-tag novo">Novo</span>
+        <h3>Cadastro de clientes</h3>
+        <p>Base de clientes com empresa, CNPJ, quem fala pela empresa, até 2 números de WhatsApp e o chatbot que o cliente recebe. Número cadastrado é reconhecido na hora; número fora da base entra como Lead novo.</p>
+      </div>
+      <img src="prints/atualizacao/50-clientes.png" alt="Cadastro de clientes" />
+    </article>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Novo cliente</h3>
+          <p>CNPJ e WhatsApp não podem se repetir (nem com motoristas), para o sistema saber qual chatbot enviar.</p>
+        </div>
+        <img src="prints/atualizacao/51-novo-cliente.png" alt="Novo cliente" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag secondary">Secundária</span>
+          <h3>Editar cliente</h3>
+          <p>Exemplo: Policom com atendimento exclusivo, direto para o atendente dedicado, sem menu.</p>
+        </div>
+        <img src="prints/atualizacao/52-editar-cliente-policom.png" alt="Editar cliente Policom" />
+      </article>
+    </div>
+
+    <div class="pair">
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Falhas de integração</h3>
+          <p>Mensagens não entregues, webhooks não processados e timeouts da API do WhatsApp, com status e “Tentar reprocessar”. Só Administrador.</p>
+        </div>
+        <img src="prints/atualizacao/33-falhas-integracao.png" alt="Falhas de integração" />
+      </article>
+      <article class="shot">
+        <div class="shot-caption">
+          <span class="shot-tag novo">Novo</span>
+          <h3>Log de auditoria</h3>
+          <p>Quem alterou o quê e quando — atendimentos, ocorrências, pendências, usuários e configuração de setor — com filtro por usuário e período. Só Administrador.</p>
+        </div>
+        <img src="prints/atualizacao/34-auditoria.png" alt="Log de auditoria" />
       </article>
     </div>
   </section>
@@ -728,12 +1024,23 @@
       Serve para a RC validar telas, fluxos, regras de acesso e tecnologias antes (ou durante) o desenvolvimento com backend real.
     </p>
     <ul>
-      <li><strong>Incluído neste protótipo:</strong> todas as telas listadas, navegação por permissão, dados mockados, painel TV com destaque âmbar, formulário de abrir chamado sem IA.</li>
-      <li><strong>Stack de produção (já no projeto):</strong> React/Vite/TS · Fastify/Prisma/PostgreSQL · MSAL/JWT · WhatsApp API · Socket.io · Zod · rate-limit · Nodemailer.</li>
+      <li><strong>Incluído neste protótipo:</strong> todas as telas listadas, navegação por permissão, dados mockados, pendências, notas de coleta por foto, correção de KM, chamados por Matriz/Filial com complementos, cadastro de clientes com chatbot, falhas de integração e auditoria.</li>
+      <li><strong>Stack de produção (já no projeto):</strong> React/Vite/TS · Fastify/Prisma/PostgreSQL · MSAL/JWT · WhatsApp API · Socket.io · Zod · rate-limit · Nodemailer · IA de leitura de imagem.</li>
       <li><strong>Como usar este arquivo:</strong> abra no navegador → botão “Imprimir / Salvar PDF” → anexe à proposta ou apresente em reunião.</li>
     </ul>
+
+    <h3 class="validar-titulo">Pontos para validar com a RC</h3>
+    <ul>
+      <li><strong>Chatbots por cliente:</strong> quais fluxos existem de verdade (no protótipo: menu padrão, cliente com contrato e Policom exclusivo).</li>
+      <li><strong>Envio da DANFE no número de notas/manifesto/odômetro:</strong> menu simples (“1 · DANFE, 2 · Odômetro, 3 · Manifesto”) ou identificação automática pela foto.</li>
+      <li><strong>Filial:</strong> é uma só ou há mais de uma? Qual o nome (ex.: Jundiaí)?</li>
+      <li><strong>Painel de TV por unidade:</strong> uma TV na doca da Matriz e outra na Filial, cada uma mostrando só a sua unidade?</li>
+      <li><strong>E-mail do cliente no cadastro:</strong> incluir para o chamado de expedição puxar o e-mail de confirmação automaticamente?</li>
+      <li><strong>Observações internas da expedição:</strong> quem abriu o chamado deve vê-las também, ou só os próprios complementos (como está hoje)?</li>
+      <li><strong>Perfis:</strong> manter permissões por tela ou criar “modelos” com os 5 perfis do briefing.</li>
+    </ul>
     <div class="cta">
-      Pasta do material: <span class="mono">proposta/PROPOSTA-MVP-RC-Transportes.html</span> · prints em <span class="mono">proposta/prints/</span>
+      Pasta do material: <span class="mono">proposta/PROPOSTA-MVP-RC-Transportes.html</span> · prints em <span class="mono">proposta/prints/</span> e <span class="mono">proposta/prints/atualizacao/</span>
     </div>
   </section>
 </body>

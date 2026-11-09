@@ -1,0 +1,59 @@
+Prints das alterações do protótipo (1920x1080) — continuação da numeração de proposta/prints
+
+TELAS ANTIGAS REFEITAS COM O VISUAL ATUAL (mesmo número dos prints originais)
+02-atendimento-carlos.png ............. Visão do atendente (só Conversas)
+05-busca-avancada.png ................. Busca avançada
+06-ocorrencias.png .................... Lista de ocorrências
+12-dashboard-graficos.png ............. Dashboard — gráficos
+14-config-setor.png ................... Configurações de setor
+
+MENU LATERAL
+20-menu-lateral-aberto.png ............ Menu lateral aberto, com o botão ☰ ao lado do logo
+21-menu-lateral-recolhido.png ......... Menu recolhido: só ícones, botão ☰ acima do logo
+
+PENDÊNCIAS
+22-pendencias.png ..................... Lista de pendências (vencidas primeiro, origem Ocorrência/Atendimento)
+23-nova-pendencia.png ................. Modal "Nova pendência"
+24-ocorrencia-pendencias-vinculadas.png  Detalhe da ocorrência com pendências vinculadas
+25-pendencia-alterar-responsavel.png .. Modal "Alterar responsável"
+26-pendencia-definir-prazo.png ........ Modal "Definir/alterar prazo"
+27-ocorrencia-criar-pendencia.png ..... "Criar pendência" a partir da ocorrência (origem já preenchida)
+
+MOTIVOS E RESULTADOS (lista completa da RC)
+28-encerrar-motivos-completos.png ..... Encerrar atendimento: 149 motivos agrupados por categoria
+29-encerrar-resultados-completos.png .. Encerrar atendimento: 19 resultados
+30-nova-ocorrencia-motivo.png ......... Nova ocorrência: motivo com a mesma lista agrupada
+
+GESTÃO E ADMINISTRAÇÃO
+31-dashboard-indicadores-pendencias.png  Dashboard com "Pendências vencidas" e "Retornos pendentes"
+32-relatorios-pendencias.png .......... Relatórios: 10º relatório "Pendências"
+33-falhas-integracao.png .............. Falhas de integração do WhatsApp (só Administrador)
+34-auditoria.png ...................... Log de auditoria (só Administrador)
+
+NOTAS DE COLETA (DANFE por foto)
+35-notas-coleta.png ................... Lista de notas lidas automaticamente, com indicadores
+36-nota-validada.png .................. DANFE validada: chave, CNPJ e número conferem
+37-nota-revisar-digito-errado.png ..... DANFE para revisar: dígito lido errado na chave
+38-nota-revisar-foto-cortada.png ...... DANFE para revisar: foto cortada, chave incompleta
+
+CHAMADOS DE EXPEDIÇÃO
+39-abrir-chamado-meus-chamados.png .... Abrir chamado com escolha Matriz/Filial e lista "Meus chamados"
+40-meu-chamado-complemento.png ........ Visão de quem abriu: dados só leitura, andamento e complemento
+41-trabalhar-chamado-novo-complemento.png  Expedição: badge "Novo complemento" na lista
+42-trabalhar-chamado-complemento-destacado.png  Expedição: complemento de quem abriu em destaque
+43-trabalhar-chamado-filial.png ....... Usuário da Filial vê só os chamados da Filial
+44-trabalhar-chamado-matriz-e-filial.png  Usuário com as duas unidades: etiqueta e filtro Matriz/Filial
+
+USUÁRIOS E CADASTROS
+45-usuarios-unidades.png .............. Lista de usuários com unidade de expedição liberada
+46-novo-usuario-matriz-filial.png ..... Novo usuário: checks Matriz/Filial para trabalhar chamado
+47-novo-usuario-novo-setor.png ........ Novo usuário: "+ Novo setor"
+48-motoristas-agregados-ajudantes.png . Cadastro de Motorista / Agregado / Ajudante
+49-novo-ajudante.png .................. Novo cadastro do tipo Ajudante (sem placa)
+50-clientes.png ....................... Cadastro de clientes com chatbot por cliente
+51-novo-cliente.png ................... Modal "Novo cliente" (2 WhatsApp + chatbot)
+52-editar-cliente-policom.png ......... Edição de cliente (Policom com atendimento exclusivo)
+
+CHECK-IN DE KM
+53-km-leitura-suspeita.png ............ Registros com leitura suspeita destacados
+54-km-corrigir.png .................... Modal "Corrigir KM" com foto, valor lido e motivo

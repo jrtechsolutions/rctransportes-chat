@@ -6,13 +6,16 @@ type Props = {
   onClose: () => void;
   children: ReactNode;
   wide?: boolean;
+  /** Para telas com imagem + formulário lado a lado */
+  extraWide?: boolean;
 };
 
-export function Modal({ title, onClose, children, wide }: Props) {
+export function Modal({ title, onClose, children, wide, extraWide }: Props) {
+  const sizeClass = extraWide ? styles.extraWide : wide ? styles.wide : '';
   return (
     <div className={styles.overlay} role="presentation" onClick={onClose}>
       <div
-        className={wide ? `${styles.modal} ${styles.wide}` : styles.modal}
+        className={`${styles.modal} ${sizeClass}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"

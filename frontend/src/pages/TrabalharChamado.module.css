@@ -248,6 +248,70 @@
   border: 1px solid var(--borda);
 }
 
+.unidadeTag {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  vertical-align: middle;
+}
+
+.filtroUnidade {
+  display: inline-flex;
+  margin-top: 10px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.filtroBtn,
+.filtroAtivo {
+  border: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  background: var(--card);
+  color: var(--mono);
+}
+
+.filtroBtn:hover {
+  background: var(--azul-l);
+  color: var(--azul-d);
+}
+
+.filtroAtivo {
+  background: var(--azul);
+  color: #fff;
+}
+
+.obsSolicitante {
+  background: var(--ambar-l);
+  border-color: #efd9b0;
+}
+
+.obsTag {
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--ambar-d);
+  margin-right: 6px;
+}
+
+.badgeComplemento {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--ambar);
+  color: #fff;
+}
+
 .obsMeta {
   font-family: var(--font-mono);
   font-size: 10.5px;

@@ -36,7 +36,138 @@
 
 .body {
   padding: 24px 32px 48px;
-  max-width: 640px;
+  display: grid;
+  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1280px;
+}
+
+@media (max-width: 1100px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.meus {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 18px 18px 10px;
+}
+
+.meusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.meusTitle {
+  font-size: 16px;
+  color: var(--azul-d);
+}
+
+.meusSub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mono);
+}
+
+.meusVazio {
+  font-size: 13px;
+  color: var(--mono);
+  margin: 0 0 10px;
+}
+
+.meuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  background: var(--card);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.meuItem:hover {
+  background: var(--azul-l);
+  border-color: #c5d6e8;
+}
+
+.meuMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.meuNome {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--texto);
+}
+
+.meuResumo {
+  font-size: 12.5px;
+  color: var(--mono);
+  margin-top: 2px;
+}
+
+.meuMeta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mono);
+  margin-top: 2px;
+}
+
+.detStatus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.detGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 16px;
+  font-size: 14px;
+  padding: 14px 16px;
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.detGrid > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.detAviso {
+  font-size: 12px;
+  color: var(--mono);
+  margin: 12px 0 0;
+}
+
+.complementoTexto {
+  margin-top: 4px;
+  padding: 8px 10px;
+  background: var(--ambar-l);
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.complementoAcoes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .card {
@@ -121,6 +252,32 @@
 .unidadeAtiva {
   background: var(--azul);
   color: #fff;
+}
+
+/* Escolha Matriz / Filial — mesmo visual do toggle kg/toneladas, botões maiores */
+.unidades {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.unidades > button {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.unidadeTag {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--azul-l);
+  color: var(--azul-d);
+  vertical-align: middle;
 }
 
 .atalhos {

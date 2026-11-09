@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { Modal } from '../components/Modal';
 import { ALL_TELA_IDS, MOTORISTAS, SETORES, TELA_LABEL, TODAS_TELAS, USUARIOS } from '../mock/data';
-import type { MotoristaMock, TelaId, UsuarioMock } from '../mock/types';
+import {
+  UNIDADES_EXPEDICAO,
+  type MotoristaMock,
+  type TelaId,
+  type UnidadeExpedicao,
+  type UsuarioMock,
+} from '../mock/types';
+import { ClientesTab } from './ClientesTab';
 import styles from './PageShared.module.css';
 import userStyles from './UsuariosPage.module.css';
 
 export function UsuariosPage() {
-  const [aba, setAba] = useState<'usuarios' | 'motoristas'>('usuarios');
+  const [aba, setAba] = useState<'usuarios' | 'motoristas' | 'clientes'>('usuarios');
   const [usuarios, setUsuarios] = useState(USUARIOS);
   const [motoristas, setMotoristas] = useState(MOTORISTAS);
   const [showUser, setShowUser] = useState(false);
@@ -15,12 +22,32 @@ export function UsuariosPage() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [setor, setSetor] = useState('Operacional');
+  const [setores, setSetores] = useState<string[]>([...SETORES]);
+  const [criandoSetor, setCriandoSetor] = useState(false);
+  const [novoSetor, setNovoSetor] = useState('');
+
+  const setorJaExiste = setores.some((s) => s.toLowerCase() === novoSetor.trim().toLowerCase());
+
+  const adicionarSetor = () => {
+    const nomeSetor = novoSetor.trim();
+    if (!nomeSetor || setorJaExiste) return;
+    setSetores((l) => [...l, nomeSetor]);
+    setSetor(nomeSetor);
+    setNovoSetor('');
+    setCriandoSetor(false);
+  };
+
+  const cancelarSetor = () => {
+    setNovoSetor('');
+    setCriandoSetor(false);
+  };
   const [admin, setAdmin] = useState(false);
   const [telas, setTelas] = useState<TelaId[]>(['conversas']);
+  const [unidades, setUnidades] = useState<UnidadeExpedicao[]>(['Matriz']);
 
   const [motNome, setMotNome] = useState('');
   const [motTel, setMotTel] = useState('');
-  const [motTipo, setMotTipo] = useState<'Funcionario' | 'Agregado'>('Funcionario');
+  const [motTipo, setMotTipo] = useState<MotoristaMock['tipo']>('Motorista');
   const [motPlaca, setMotPlaca] = useState('');
 
   const toggleTela = (id: TelaId) => {
@@ -33,8 +60,14 @@ export function UsuariosPage() {
     if (checked) setTelas([...ALL_TELA_IDS]);
   };
 
+  const trabalhaChamado = admin || telas.includes('trabalhar-chamado');
+  const unidadesOk = !trabalhaChamado || admin || unidades.length > 0;
+
+  const toggleUnidade = (u: UnidadeExpedicao) =>
+    setUnidades((prev) => (prev.includes(u) ? prev.filter((x) => x !== u) : [...prev, u]));
+
   const criarUsuario = () => {
-    if (!nome.trim() || !email.trim()) return;
+    if (!nome.trim() || !email.trim() || !unidadesOk) return;
     const novo: UsuarioMock = {
       id: `u${Date.now()}`,
       nome: nome.trim(),
@@ -42,6 +75,7 @@ export function UsuariosPage() {
       setor,
       admin,
       telas: admin ? [...ALL_TELA_IDS] : telas,
+      unidadesChamado: admin ? [...UNIDADES_EXPEDICAO] : trabalhaChamado ? unidades : undefined,
       status: 'Ativo',
     };
     setUsuarios((list) => [novo, ...list]);
@@ -50,6 +84,7 @@ export function UsuariosPage() {
     setEmail('');
     setAdmin(false);
     setTelas(['conversas']);
+    setUnidades(['Matriz']);
     setSetor('Operacional');
   };
 
@@ -60,7 +95,7 @@ export function UsuariosPage() {
       nome: motNome.trim(),
       telefone: motTel.trim(),
       tipo: motTipo,
-      placa: motPlaca.trim() || null,
+      placa: motTipo === 'Ajudante' ? null : motPlaca.trim() || null,
       status: 'Ativo',
     };
     setMotoristas((list) => [novo, ...list]);
@@ -75,9 +110,10 @@ export function UsuariosPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Usuários</h1>
+        <h1 className={styles.title}>Usuários e cadastros</h1>
         <p className={styles.sub}>
-          Cada usuário tem um setor e telas liberadas por checkbox — Administrador vê tudo
+          Usuários do sistema com setor e telas liberadas, e a base de motoristas e clientes que falam
+          com a RC pelo WhatsApp
         </p>
       </header>
 
@@ -94,9 +130,18 @@ export function UsuariosPage() {
           className={aba === 'motoristas' ? styles.tabActive : styles.tab}
           onClick={() => setAba('motoristas')}
         >
-          Motoristas e Agregados
+          Motoristas, Agregados e Ajudantes
+        </button>
+        <button
+          type="button"
+          className={aba === 'clientes' ? styles.tabActive : styles.tab}
+          onClick={() => setAba('clientes')}
+        >
+          Clientes
         </button>
       </div>
+
+      {aba === 'clientes' && <ClientesTab motoristas={motoristas} />}
 
       {aba === 'usuarios' && (
         <>
@@ -130,6 +175,8 @@ export function UsuariosPage() {
                       {telasExibidas(u).map((t) => (
                         <span key={t} className={userStyles.telaBadge}>
                           {TELA_LABEL[t]}
+                          {t === 'trabalhar-chamado' &&
+                            ` · ${(u.admin ? UNIDADES_EXPEDICAO : u.unidadesChamado ?? []).join(' e ')}`}
                         </span>
                       ))}
                     </div>
@@ -155,7 +202,7 @@ export function UsuariosPage() {
           <div className={styles.toolbar}>
             <span />
             <button type="button" className="btn btn-ambar" onClick={() => setShowMot(true)}>
-              Novo motorista/agregado
+              Novo motorista / agregado / ajudante
             </button>
           </div>
           <table className="table">
@@ -173,7 +220,7 @@ export function UsuariosPage() {
                 <tr key={m.id}>
                   <td>{m.nome}</td>
                   <td className="mono">{m.telefone}</td>
-                  <td>{m.tipo === 'Funcionario' ? 'Funcionário' : 'Agregado'}</td>
+                  <td>{m.tipo}</td>
                   <td className="mono">{m.placa ?? '—'}</td>
                   <td>
                     <span
@@ -202,13 +249,57 @@ export function UsuariosPage() {
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="field">
-            <label>Setor</label>
-            <select value={setor} onChange={(e) => setSetor(e.target.value)}>
-              {SETORES.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
-            <span className="hint">Define a fila de mensagens — independente das telas liberadas</span>
+            <div className={userStyles.labelRow}>
+              <label htmlFor="usr-setor">Setor</label>
+              {!criandoSetor && (
+                <button type="button" className="link-edit" onClick={() => setCriandoSetor(true)}>
+                  + Novo setor
+                </button>
+              )}
+            </div>
+            {criandoSetor ? (
+              <div className={userStyles.novoSetor}>
+                <input
+                  autoFocus
+                  value={novoSetor}
+                  onChange={(e) => setNovoSetor(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') adicionarSetor();
+                    if (e.key === 'Escape') cancelarSetor();
+                  }}
+                  placeholder="Nome do novo setor, ex.: Expedição"
+                  maxLength={60}
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm"
+                  disabled={!novoSetor.trim() || setorJaExiste}
+                  onClick={adicionarSetor}
+                >
+                  Adicionar
+                </button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={cancelarSetor}>
+                  Cancelar
+                </button>
+              </div>
+            ) : (
+              <select id="usr-setor" value={setor} onChange={(e) => setSetor(e.target.value)}>
+                {setores.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
+              </select>
+            )}
+            {criandoSetor && setorJaExiste ? (
+              <span className="hint" style={{ color: 'var(--erro-d)' }}>
+                Esse setor já existe
+              </span>
+            ) : (
+              <span className="hint">
+                {criandoSetor
+                  ? 'O setor novo já fica disponível aqui; SLA e limites de atendimento se definem em Config. de setor'
+                  : 'Define a fila de mensagens — independente das telas liberadas'}
+              </span>
+            )}
           </div>
 
           <label className={userStyles.adminToggle}>
@@ -237,11 +328,36 @@ export function UsuariosPage() {
             ))}
           </div>
 
+          {trabalhaChamado && (
+            <div className={userStyles.checkGrid} style={{ marginTop: 12 }}>
+              <div className={userStyles.checkTitle}>Trabalha chamados de expedição de</div>
+              {UNIDADES_EXPEDICAO.map((u) => (
+                <label
+                  key={u}
+                  className={admin ? `${userStyles.checkItem} ${userStyles.checkDisabled}` : userStyles.checkItem}
+                >
+                  <input
+                    type="checkbox"
+                    checked={admin || unidades.includes(u)}
+                    disabled={admin}
+                    onChange={() => toggleUnidade(u)}
+                  />
+                  {u}
+                </label>
+              ))}
+              {!unidadesOk && (
+                <span className="hint" style={{ gridColumn: '1 / -1', color: 'var(--erro-d)' }}>
+                  Marque pelo menos uma unidade
+                </span>
+              )}
+            </div>
+          )}
+
           <button
             type="button"
             className="btn btn-ambar"
             style={{ width: '100%', marginTop: 16 }}
-            disabled={!nome.trim() || !email.trim() || (!admin && telas.length === 0)}
+            disabled={!nome.trim() || !email.trim() || (!admin && telas.length === 0) || !unidadesOk}
             onClick={criarUsuario}
           >
             Criar usuário
@@ -250,7 +366,7 @@ export function UsuariosPage() {
       )}
 
       {showMot && (
-        <Modal title="Novo motorista / agregado" onClose={() => setShowMot(false)}>
+        <Modal title="Novo motorista / agregado / ajudante" onClose={() => setShowMot(false)}>
           <div className="field">
             <label>Nome</label>
             <input value={motNome} onChange={(e) => setMotNome(e.target.value)} />
@@ -263,16 +379,19 @@ export function UsuariosPage() {
             <label>Tipo</label>
             <select
               value={motTipo}
-              onChange={(e) => setMotTipo(e.target.value as 'Funcionario' | 'Agregado')}
+              onChange={(e) => setMotTipo(e.target.value as MotoristaMock['tipo'])}
             >
-              <option value="Funcionario">Funcionário</option>
-              <option value="Agregado">Agregado</option>
+              <option>Motorista</option>
+              <option>Agregado</option>
+              <option>Ajudante</option>
             </select>
           </div>
-          <div className="field">
-            <label>Placa (opcional)</label>
-            <input className="mono" value={motPlaca} onChange={(e) => setMotPlaca(e.target.value)} />
-          </div>
+          {motTipo !== 'Ajudante' && (
+            <div className="field">
+              <label>Placa (opcional)</label>
+              <input className="mono" value={motPlaca} onChange={(e) => setMotPlaca(e.target.value)} />
+            </div>
+          )}
           <button
             type="button"
             className="btn btn-ambar"

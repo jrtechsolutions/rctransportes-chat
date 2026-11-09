@@ -4,12 +4,12 @@ export type TelaId =
   | 'ocorrencias'
   | 'pendencias'
   | 'km'
+  | 'notas-coleta'
   | 'abrir-chamado'
   | 'trabalhar-chamado'
   | 'dashboard'
   | 'relatorios'
   | 'usuarios'
-  | 'numeros-whatsapp'
   | 'falhas-integracao'
   | 'auditoria';
 
@@ -63,6 +63,23 @@ export type Pendencia = {
   prioridade: Ocorrencia['prioridade'];
 };
 
+export type NotaColeta = {
+  id: string;
+  recebidaEm: string;
+  remetente: string;
+  tipoRemetente: 'Motorista' | 'Agregado' | 'Ajudante';
+  telefone: string;
+  emitente: string;
+  cnpj: string;
+  numero: string;
+  serie: string;
+  chave: string;
+  /** Como a chave foi obtida: código de barras da DANFE ou leitura do texto pela IA */
+  leitura: 'Código de barras' | 'IA (texto impresso)';
+  /** Preenchido quando alguém do escritório revisou e confirmou os dados */
+  confirmadaPor: string | null;
+};
+
 export type FalhaIntegracao = {
   id: string;
   dataHora: string;
@@ -88,7 +105,21 @@ export type KmRegistro = {
   kmInicial: number;
   kmFinal: number | null;
   status: 'ok' | 'pendente';
+  /** Só no protótipo: o número que de fato aparece na foto, quando o sistema leu diferente */
+  fotoMock?: { inicial?: number; final?: number };
+  /** Preenchido quando alguém corrigiu manualmente o número lido da foto */
+  correcao?: {
+    por: string;
+    quando: string;
+    motivo: string;
+    lidoInicial: number;
+    lidoFinal: number | null;
+  };
 };
+
+export type UnidadeExpedicao = 'Matriz' | 'Filial';
+
+export const UNIDADES_EXPEDICAO: UnidadeExpedicao[] = ['Matriz', 'Filial'];
 
 export type UsuarioMock = {
   id: string;
@@ -97,6 +128,8 @@ export type UsuarioMock = {
   setor: string;
   admin: boolean;
   telas: TelaId[];
+  /** Em quais unidades a pessoa trabalha chamados de expedição (só vale com a tela "Trabalhar chamado") */
+  unidadesChamado?: UnidadeExpedicao[];
   status: 'Ativo' | 'Inativo';
   /** Aparece no seletor "Visualizar como" da sidebar */
   visualizarComo?: boolean;
@@ -108,8 +141,21 @@ export type MotoristaMock = {
   id: string;
   nome: string;
   telefone: string;
-  tipo: 'Funcionario' | 'Agregado';
+  tipo: 'Motorista' | 'Agregado' | 'Ajudante';
   placa: string | null;
+  status: 'Ativo' | 'Inativo';
+};
+
+export type ClienteMock = {
+  id: string;
+  empresa: string;
+  cnpj: string;
+  /** Pessoa que fala pela empresa no WhatsApp */
+  contato: string;
+  whatsapp1: string;
+  whatsapp2: string | null;
+  /** Fluxo de chatbot enviado quando a mensagem vem de um dos números do cliente */
+  chatbot: string;
   status: 'Ativo' | 'Inativo';
 };
 
@@ -128,6 +174,8 @@ export type ChamadoMock = {
   tipoVeiculo: string;
   peso: string;
   horarioLimite: string;
+  /** Unidade de expedição para onde o chamado foi aberto */
+  unidade: UnidadeExpedicao;
   status: 'ABERTO' | 'EM_ANDAMENTO' | 'RESOLVIDO';
   criadoPorId: string;
   assumidoPorId: string | null;
@@ -138,12 +186,21 @@ export type ChamadoMock = {
   criadoPor: { id: string; nome: string; email?: string };
   assumidoPor: { id: string; nome: string } | null;
   emailOriginalTexto: string;
-  observacoes: {
-    id: string;
-    chamadoId: string;
-    autorId: string;
-    texto: string;
-    criadoEm: string;
-    autor: { id: string; nome: string };
-  }[];
+  observacoes: ObservacaoChamado[];
+  /** Quem abriu adicionou complemento que a expedição ainda não abriu */
+  complementoNovo?: boolean;
+};
+
+export type ObservacaoChamado = {
+  id: string;
+  chamadoId: string;
+  autorId: string;
+  texto: string;
+  criadoEm: string;
+  autor: { id: string; nome: string };
+  /**
+   * 'expedicao' = observação interna entre turnos (padrão);
+   * 'solicitante' = complemento de quem abriu o chamado, visível para os dois lados
+   */
+  origem?: 'expedicao' | 'solicitante';
 };

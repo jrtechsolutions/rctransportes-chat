@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { formatDateTime } from '../lib/sanitize';
 import { resumoCarga, statusChamadoLabel, tempoDesde } from '../lib/chamados';
-import { CHAMADOS_MOCK } from '../mock/data';
-import type { ChamadoMock } from '../mock/types';
+import { useChamados } from '../mock/ChamadosContext';
+import { usePrototype } from '../mock/PrototypeContext';
+import { UNIDADES_EXPEDICAO, type ChamadoMock, type UnidadeExpedicao } from '../mock/types';
 import styles from './TrabalharChamado.module.css';
 
 function plural(n: number, singular: string, pluralForm: string) {
@@ -10,8 +11,19 @@ function plural(n: number, singular: string, pluralForm: string) {
 }
 
 export function TrabalharChamado() {
-  const [itens, setItens] = useState<ChamadoMock[]>(() =>
-    CHAMADOS_MOCK.map((c) => ({ ...c, observacoes: [...c.observacoes] })),
+  const { usuario } = usePrototype();
+  const { chamados: todos, setChamados: setItens } = useChamados();
+  const minhasUnidades: UnidadeExpedicao[] = usuario.admin
+    ? UNIDADES_EXPEDICAO
+    : usuario.unidadesChamado ?? [];
+  const [filtroUnidade, setFiltroUnidade] = useState<UnidadeExpedicao | 'todas'>('todas');
+  const itens = useMemo(
+    () =>
+      todos.filter(
+        (c) =>
+          minhasUnidades.includes(c.unidade) && (filtroUnidade === 'todas' || c.unidade === filtroUnidade),
+      ),
+    [todos, minhasUnidades, filtroUnidade],
   );
   const [selecionadoId, setSelecionadoId] = useState<string | null>(null);
   const [observacao, setObservacao] = useState('');
@@ -37,20 +49,20 @@ export function TrabalharChamado() {
     setAviso(null);
     setObservacao('');
     setSelecionadoId(chamado.id);
-    if (chamado.status === 'ABERTO') {
-      setItens((list) =>
-        list.map((c) =>
-          c.id === chamado.id
-            ? {
-                ...c,
-                status: 'EM_ANDAMENTO',
-                assumidoPorId: 'mock-user',
-                assumidoPor: { id: 'mock-user', nome: 'Você (protótipo)' },
-              }
-            : c,
-        ),
-      );
-    }
+    setItens((list) =>
+      list.map((c) => {
+        if (c.id !== chamado.id) return c;
+        const lido = { ...c, complementoNovo: false };
+        return c.status === 'ABERTO'
+          ? {
+              ...lido,
+              status: 'EM_ANDAMENTO',
+              assumidoPorId: 'mock-user',
+              assumidoPor: { id: 'mock-user', nome: 'Você (protótipo)' },
+            }
+          : lido;
+      }),
+    );
   };
 
   const salvarObservacao = () => {
@@ -115,12 +127,16 @@ export function TrabalharChamado() {
   const renderItem = (c: ChamadoMock) => (
     <button key={c.id} type="button" className={itemClass(c)} onClick={() => abrir(c)}>
       <div className={styles.itemMain}>
-        <div className={styles.itemNome}>{c.clienteNome}</div>
+        <div className={styles.itemNome}>
+          {c.clienteNome}
+          {minhasUnidades.length > 1 && <span className={styles.unidadeTag}>{c.unidade}</span>}
+        </div>
         <div className={c.status === 'ABERTO' && c.id === selecionadoId ? styles.itemResumoAmbar : styles.itemResumo}>
           {resumoCarga(c)} · limite {c.horarioLimite}
           {c.assumidoPor && c.status === 'EM_ANDAMENTO' && ` · ${c.assumidoPor.nome}`}
         </div>
       </div>
+      {c.complementoNovo && <span className={styles.badgeComplemento}>Novo complemento</span>}
       {c.status === 'RESOLVIDO' ? (
         <span className={styles.badgeErro}>E-mail não enviado</span>
       ) : (
@@ -137,9 +153,31 @@ export function TrabalharChamado() {
         <header className={styles.header}>
           <h1 className={styles.title}>Chamados</h1>
           <div className={styles.sub}>
+            Expedição {minhasUnidades.join(' e ') || '—'} ·{' '}
             {plural(abertos, 'aberto', 'abertos')}, {plural(emAndamento, 'em andamento', 'em andamento')}
           </div>
+          {minhasUnidades.length > 1 && (
+            <div className={styles.filtroUnidade} role="group" aria-label="Filtrar por unidade">
+              {(['todas', ...UNIDADES_EXPEDICAO] as const).map((u) => (
+                <button
+                  key={u}
+                  type="button"
+                  className={filtroUnidade === u ? styles.filtroAtivo : styles.filtroBtn}
+                  onClick={() => setFiltroUnidade(u)}
+                >
+                  {u === 'todas' ? 'Todas' : u}
+                </button>
+              ))}
+            </div>
+          )}
         </header>
+
+        {minhasUnidades.length === 0 && (
+          <p className={styles.empty}>
+            Seu usuário não tem unidade de expedição liberada. Peça ao administrador para marcar Matriz
+            e/ou Filial no seu cadastro.
+          </p>
+        )}
 
         {(erro || aviso) && (
           <div className={styles.alertas}>
@@ -164,13 +202,13 @@ export function TrabalharChamado() {
       </div>
 
       <aside className={styles.detalhePane}>
-        {!selecionadoId && <p className={styles.emptyDetalhe}>Selecione um chamado para ver os detalhes.</p>}
+        {!d && <p className={styles.emptyDetalhe}>Selecione um chamado para ver os detalhes.</p>}
         {d && (
           <>
             <div className={styles.detalheHeader}>
               <h2 className={styles.detalheNome}>{d.clienteNome}</h2>
               <div className={styles.detalheSub}>
-                {d.notaFiscal ? `${d.notaFiscal} · ` : ''}
+                Expedição {d.unidade} · {d.notaFiscal ? `${d.notaFiscal} · ` : ''}
                 {d.clienteEmail}
               </div>
             </div>
@@ -217,8 +255,14 @@ export function TrabalharChamado() {
               {d.observacoes.length > 0 && (
                 <div className={styles.historico}>
                   {d.observacoes.map((o) => (
-                    <div key={o.id} className={styles.obs}>
+                    <div
+                      key={o.id}
+                      className={o.origem === 'solicitante' ? `${styles.obs} ${styles.obsSolicitante}` : styles.obs}
+                    >
                       <div className={styles.obsMeta}>
+                        {o.origem === 'solicitante' && (
+                          <span className={styles.obsTag}>Complemento de quem abriu</span>
+                        )}
                         {o.autor.nome} · {formatDateTime(o.criadoEm)}
                       </div>
                       <div className={styles.obsTexto}>{o.texto}</div>
